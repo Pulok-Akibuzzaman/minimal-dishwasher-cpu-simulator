@@ -3,7 +3,7 @@
 
 [![GitHub Repository](https://img.shields.io/badge/GitHub-aquacore8--cpu--simulator-blue?logo=github)](https://github.com/Pulok-Akibuzzaman/aquacore8-cpu-simulator)
 [![Language](https://img.shields.io/badge/Language-Pure%20C%20(C99)-00599C?logo=c)](src/)
-[![Tests](https://img.shields.io/badge/Verification-37%2F37%20Passed%20(100%25)-brightgreen)](src/tests.c)
+[![Tests](https://img.shields.io/badge/Verification-37%2F37%20Passed%20(100%25)-brightgreen)](src/main.c)
 [![Architecture](https://img.shields.io/badge/Architecture-8--Bit%20Harvard%20RISC%20ASIP-orange)](docs/ISA_Specification.md)
 
 ---
@@ -210,34 +210,20 @@ Mini-Project/
 ├── README.md                         ; Master project README & documentation index
 ├── Miniproject description.pdf       ; Course assignment requirements & guidelines
 │
-├── src/                              ; Pure C Microprocessor & Simulator Engine
-│   ├── aquacore8.h                   ; CPU core, registers, I/O ports & physical plant header
-│   ├── aquacore8.c                   ; Execution loop, ALU, disassembler & physical plant
-│   ├── tests.c                       ; 37 automated unit & full integration test cases
-│   └── main.c                        ; Interactive CLI visualizer & batch trace runner
+├── src/                              ; Pure C Microprocessor & Simulator Engine (Beginner-Friendly)
+│   ├── aquacore8.h                   ; Architecture specification, registers, ALU flags & plant header
+│   ├── aquacore8.c                   ; CPU execution engine (fetch-decode-execute), ALU & physical plant
+│   └── main.c                        ; Complete driver: 37 automated tests, batch runner & interactive monitor
 │
 ├── programs/                         ; Firmware & Machine Code
 │   ├── dishwasher_controller.asm     ; Complete assembly firmware (216 instructions)
 │   └── dishwasher_controller.hex     ; Compiled 16-bit hexadecimal machine code
-│
-├── verilog/                          ; Synthesizable Hardware RTL Design
-│   ├── cpu_top.v                     ; Top-level synthesizable processor
-│   ├── alu.v                         ; 8-bit Arithmetic Logic Unit with flags
-│   ├── control_unit.v                ; Hardwired single-cycle instruction decoder
-│   ├── datapath.v                    ; PC, ALU, Register File, Stack, and MUXes
-│   ├── register_file.v               ; 4 x 8-bit register bank (R0..R3)
-│   ├── instruction_memory.v          ; 256 x 16-bit ROM module
-│   ├── data_memory.v                 ; 256 x 8-bit RAM module
-│   ├── io_controller.v               ; Port-mapped sensor & actuator registers
-│   └── dishwasher_tb.v               ; Hardware testbench & timing stimulus
 │
 └── docs/                             ; Formal Academic Documentation
     ├── Full_Project_Summary.docx     ; Complete plain-English executive summary (Word)
     ├── Full_Project_Summary.md       ; Complete plain-English executive summary (Markdown)
     ├── Project_Report_CSE360.docx    ; Official Word document formatted for soft binding
     ├── Project_Report_CSE360.html    ; Printable A4 formatted report (Ctrl+P -> PDF)
-    ├── Project_Report_CSE360.md      ; Full 9-section report in Markdown
-    ├── Explain_Like_Im_5.html        ; Printable web version of the ELI5 guide
     ├── Explain_Like_Im_5.md          ; "Explain Like I'm 5" intuitive concept breakdown
     ├── ISA_Specification.md          ; Complete opcode and instruction set reference
     └── Architecture_Diagrams.md      ; Mermaid schematics & datapath diagrams
@@ -252,10 +238,10 @@ Mini-Project/
 2. **[Academic Project Report (Word Document)](docs/Project_Report_CSE360.docx)**
    * Clean, editable Microsoft Word `.docx` file following the exact 9-section manual.
    * Features seminar/dissertation cover page, student names, IDs, emails, tables, equations, and references.
-3. **[Academic Project Report (HTML Printable)](docs/Project_Report_CSE360.html) | [(Markdown)](docs/Project_Report_CSE360.md)**
+3. **[Academic Project Report (HTML Printable)](docs/Project_Report_CSE360.html)**
    * Formatted strictly to the 9-section CSE360 syllabus outline with MathJax LaTeX formulas.
    * Ready for direct A4 soft-binding print (`Ctrl + P` in any browser).
-4. **[Explain Like I'm 5 (ELI5) Guide (HTML)](docs/Explain_Like_Im_5.html) | [(Markdown)](docs/Explain_Like_Im_5.md)**
+4. **[Explain Like I'm 5 (ELI5) Guide (Markdown)](docs/Explain_Like_Im_5.md)**
    * A friendly, engaging guide explaining every component using simple everyday metaphors (the cookbook, the whiteboard, the little pockets, the turbidity goggles, and kid safety).
 5. **[Instruction Set Architecture (ISA) Specification (Markdown)](docs/ISA_Specification.md)**
    * Complete bitfield encodings, opcodes, register conventions, and cycle timings.

@@ -240,7 +240,7 @@ window.MathJax = {
         <div class="project-title">
             Suggest and Design a Minimal CPU Architecture, Including ISA, Datapath, and Control Unit, for Automating Dishwasher Control Functions with Sensor Inputs, and Verify It with a Simulator
         </div>
-        <div class="subtitle">Architecture Designation: AquaCore-8 (8-Bit ASIP) &bull; Verified in Pure C &amp; Verilog HDL</div>
+        <div class="subtitle">Architecture Designation: AquaCore-8 (8-Bit ASIP) &bull; Verified via Cyber-Physical Simulator in Pure C</div>
     </div>
 
     <div class="meta-box">
@@ -283,7 +283,7 @@ window.MathJax = {
     <li><strong>Sensor &amp; Actuator Port Mapping:</strong> Engineering dedicated memory/port-mapped I/O channels linking the CPU core to critical dishwasher peripherals: Door Interlock, Water Level Transducer, NTC Thermistor Temperature Sensor, Optical Infrared Turbidity Sensor, Solenoid Valves, Spray Circulation Pump, 1800W Heating Element, Drying Fan, and Alarm Buzzer.</li>
     <li><strong>Firmware Assembly &amp; Machine Code:</strong> Developing complete symbolic assembly directives, resolving label addresses, and generating executable machine code (<code>dishwasher_controller.hex</code>).</li>
     <li><strong>Verification &amp; Simulation:</strong> Building both an interactive real-time visualizer and an automated regression test suite in pure C to prove 100% bug-free operation, correct cycle progression (Normal, Eco, Heavy), and emergency safety trip mechanisms (Door Ajar interlock, Overheat emergency cutoff).</li>
-    <li><strong>Verilog RTL Delivery:</strong> Providing synthesizable Verilog HDL descriptions for all processor blocks (ALU, Register File, Control Unit, Datapath, ROM, RAM, I/O).</li>
+    <li><strong>Cyber-Physical Plant Simulation:</strong> Modeling thermodynamic water heating, fluid level dynamics, and optical soil wash kinetics to prove closed-loop control fidelity against physical sensors.</li>
 </ul>
 
 <!-- 3. THEORY -->
@@ -583,12 +583,11 @@ window.MathJax = {
 <h1>5. Implementation</h1>
 
 <h2>5.1 Software Subsystems &amp; File Map</h2>
-<p>The implementation is cleanly organized into pure C software and hardware Verilog RTL:</p>
+<p>In accordance with the project guidelines permitting simulator implementation in C/C++, the entire AquaCore-8 architecture and dishwasher cyber-physical plant are implemented in clean, beginner-friendly pure C (C99):</p>
 <ul>
-    <li><strong>Pure C Implementation (Microprocessor &amp; Physical Simulator):</strong> Located in <code>src/</code> (<code>aquacore8.h</code>, <code>aquacore8.c</code>, <code>dishwasher_plant.h</code>, <code>dishwasher_plant.c</code>, <code>tests.c</code>, <code>main.c</code>). Compiles natively with GCC into <code>aquacore8_sim.exe</code>. Offers direct native 8-bit unsigned hardware mapping (<code>uint8_t</code>), zero runtime overhead, and 100% deterministic cycle execution.</li>
-    <li><strong>Interactive Visualizer &amp; Batch Engine:</strong> Implemented in <code>src/main.c</code>, providing a live terminal dashboard displaying CPU registers, flags, instruction disassembly, and cyber-physical sensor/actuator states.</li>
-    <li><strong>Verification Test Harness:</strong> Implemented in <code>src/tests.c</code> with 37 automated tests passing at 100%.</li>
-    <li><strong>Hardware RTL:</strong> Complete synthesizable Verilog modules (<code>verilog/*.v</code>) for standard FPGA synthesis.</li>
+    <li><strong>Microprocessor Architecture Header (<code>src/aquacore8.h</code>):</strong> Defines the 16 opcodes, register file structure ($R_0..R_3$), condition flags ($Z, C, N, V$), memory map, I/O peripheral port addresses, and physical dishwasher plant models with extensive educational annotations.</li>
+    <li><strong>CPU Execution Engine &amp; Cyber-Physical Simulator (<code>src/aquacore8.c</code>):</strong> Implements the classic Fetch-Decode-Execute pipeline cycle, 8-bit Arithmetic Logic Unit (ALU) with full carry and overflow generation, 16-bit HEX machine code loader, disassembler, and continuous thermodynamic water and soil models.</li>
+    <li><strong>Main Driver, Verification Suite &amp; Visualizer (<code>src/main.c</code>):</strong> Contains all 37 dynamic unit and integration test assertions, the batch execution runner for rapid validation, and an interactive real-time terminal monitor.</li>
 </ul>
 
 <h2>5.2 Automated Dishwasher Assembly Code Structure</h2>

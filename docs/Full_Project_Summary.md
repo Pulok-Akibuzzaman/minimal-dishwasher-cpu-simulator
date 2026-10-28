@@ -34,8 +34,8 @@ Inside every modern smart household appliance (like a dishwasher or washing mach
 > * If you alter a single number or assembly instruction, the test suite immediately detects the mismatch and prints a red `[FAIL]`.
 
 ### How to Prove It is Dynamic in 5 Seconds:
-1. Open `src/tests.c` in any text editor.
-2. Find line 57:
+1. Open `src/main.c` in any text editor.
+2. Find line 71:
    ```c
    assert_eq("ADD R2 = 10 + 25", 35, cpu.R[2]);
    ```

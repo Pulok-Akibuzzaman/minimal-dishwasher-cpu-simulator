@@ -3,11 +3,18 @@
  * Project:      AquaCore-8 Microprocessor Architecture for Dishwasher Automation
  * Course:       CSE360 Computer Architecture
  * Institution:  East West University (EWU)
- * Authors:      Nusrat Rahman Aurna (ID: 2023-3-60-057)
- *               Pulok Akibuzzaman (ID: 2023-3-60-051)
- *               Md. Jakaria Masud (ID: 2023-3-60-386)
- * File:         aquacore8.c - CPU Execution Core, ALU Logic & Machine Code Disassembler
+ * Authors:      Nusrat Rahman Aurna (ID: 2023-3-60-057, Email: 2023-3-60-057@std.ewubd.edu)
+ *               Pulok Akibuzzaman   (ID: 2023-3-60-051, Email: 2023-3-60-051@std.ewubd.edu)
+ *               Md. Jakaria Masud   (ID: 2023-3-60-386, Email: 2023-3-60-386@std.ewubd.edu)
+ * File:         aquacore8.c - CPU Execution Core, ALU Logic & Physical Plant Simulator
  * ==============================================================================
+ * 
+ * 💡 WHAT IS THIS FILE?
+ * This file contains the complete engine of our project:
+ *  1. [ALU & Flags]: Adds, subtracts, and calculates Z, C, N, V condition flags.
+ *  2. [CPU Step]:   Executes the classic Fetch-Decode-Execute pipeline cycle.
+ *  3. [HEX Loader]: Reads 16-bit machine code from dishwasher_controller.hex into ROM.
+ *  4. [Plant]:      Simulates the physical dishwasher (water levels, heaters, soil).
  */
 
 #include "aquacore8.h"

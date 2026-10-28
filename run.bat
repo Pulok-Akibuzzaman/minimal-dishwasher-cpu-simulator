@@ -21,18 +21,18 @@ echo        Department of CSE ^| East West University (EWU)
 echo        Course: CSE360 Computer Architecture
 echo ===============================================================================
 echo   Project Group Members:
-echo     * Nusrat Rahman Aurna (ID: 2023-3-60-057)
-echo     * Pulok Akibuzzaman   (ID: 2023-3-60-051)
-echo     * Md. Jakaria Masud   (ID: 2023-3-60-386)
+echo     * Nusrat Rahman Aurna (ID: 2023-3-60-057, 2023-3-60-057@std.ewubd.edu)
+echo     * Pulok Akibuzzaman   (ID: 2023-3-60-051, 2023-3-60-051@std.ewubd.edu)
+echo     * Md. Jakaria Masud   (ID: 2023-3-60-386, 2023-3-60-386@std.ewubd.edu)
 echo ===============================================================================
 echo.
 echo   Please select an option to execute:
 echo.
-echo     [1] Run Automated Verification Tests (37/37 Unit ^& Safety Tests in C)
+echo     [1] Run Automated Verification Tests (37/37 Unit & Safety Tests in C)
 echo     [2] Launch Interactive C Terminal Simulator (Real-Time Monitor)
 echo     [3] Run Full Dishwasher Wash Cycle Batch Trace (Trace to Console)
-echo     [4] Open Official Academic Project Report (Printable A4 with MathJax)
-echo     [5] Open "Explain Like I'm 5" Conceptual Guide (HTML in Browser)
+echo     [4] Open Official Academic Project Report (docs\Project_Report_CSE360.docx)
+echo     [5] Open Full Project Executive Summary (docs\Full_Project_Summary.docx)
 echo     [6] Recompile C Simulator (build.bat)
 echo     [0] Exit
 echo.
@@ -89,14 +89,22 @@ goto end
 
 :opt_report
 cls
-echo Opening Project_Report_CSE360.html in your default web browser...
-start "" "docs\Project_Report_CSE360.html"
+echo Opening Project_Report_CSE360.docx...
+if exist "docs\Project_Report_CSE360.docx" (
+    start "" "docs\Project_Report_CSE360.docx"
+) else (
+    start "" "docs\Project_Report_CSE360.html"
+)
 goto menu
 
 :opt_eli5
 cls
-echo Opening Explain_Like_Im_5.html in your default web browser...
-start "" "docs\Explain_Like_Im_5.html"
+echo Opening Full_Project_Summary.docx...
+if exist "docs\Full_Project_Summary.docx" (
+    start "" "docs\Full_Project_Summary.docx"
+) else (
+    start "" "docs\Full_Project_Summary.md"
+)
 goto menu
 
 :opt_rebuild
