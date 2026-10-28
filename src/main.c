@@ -496,45 +496,65 @@ static void run_interactive_cli(const char *hex_file) {
         } else if (strcmp(cmd, "start") == 0) {
             plant.start_button_pressed = true;
             plant_sync_to_io(&plant, &cpu);
-            printf("Start button pressed.\n");
-        } else if (strcmp(cmd, "mode") == 0) {
-            plant.selected_mode = arg & 0x03;
-            plant_sync_to_io(&plant, &cpu);
-            printf("Mode set to: %d\n", plant.selected_mode);
-        } else if (strcmp(cmd, "door") == 0) {
-            char subcmd[32];
-            sscanf(line, "%*s %31s", subcmd);
-            if (strcmp(subcmd, "open") == 0) {
-                plant.door_closed = false;
-                printf("Door is OPEN. Interlock activated.\n");
-            } else {
-                plant.door_closed = true;
-                printf("Door is CLOSED.\n");
-            }
-            plant_sync_to_io(&plant, &cpu);
-        } else if (strcmp(cmd, "temp") == 0) {
-            plant.water_temp = (double)arg;
-            plant_sync_to_io(&plant, &cpu);
-            printf("Water temperature injected: %d C\n", arg);
-        } else if (strcmp(cmd, "step") == 0) {
-            int steps = (n > 1 && arg > 0) ? arg : 1;
-            for (int i = 0; i < steps; i++) {
+            printf("\n>>> Start button pressed! Entering Pre-Wash phase...\n");
+            // Step 50 cycles so CPU sets up the wash mode and enters Pre-Wash
+            for (int i = 0; i < 50; i++) {
+                if (cpu.halted) break;
                 cpu_step(&cpu);
                 plant_step(&plant, &cpu);
             }
             print_dashboard(&cpu, &plant);
-        } else if (strcmp(cmd, "run") == 0) {
-            int steps = (n > 1 && arg > 0) ? arg : 100;
+            printf("\n💡 Washing started! Type 'run' or 'run 300' to advance the wash cycle.\n");
+        } else if (strcmp(cmd, "mode") == 0) {
+            plant.selected_mode = arg & 0x03;
+            plant_sync_to_io(&plant, &cpu);
+            const char *mname = (plant.selected_mode == 1) ? "Eco (45C)" :
+                                (plant.selected_mode == 2) ? "Heavy (65C)" : "Normal (55C)";
+            printf("Mode set to: %d [%s]\n", plant.selected_mode, mname);
+        } else if (strcmp(cmd, "door") == 0) {
+            char subcmd[32];
+            subcmd[0] = '\0';
+            sscanf(line, "%*s %31s", subcmd);
+            if (strcmp(subcmd, "open") == 0) {
+                plant.door_closed = false;
+                printf("\n>>> Dishwasher door OPENED! Safety interlock triggered (actuators cut off).\n");
+            } else {
+                plant.door_closed = true;
+                printf("\n>>> Dishwasher door CLOSED. Resuming normal operation.\n");
+            }
+            plant_sync_to_io(&plant, &cpu);
+            print_dashboard(&cpu, &plant);
+        } else if (strcmp(cmd, "temp") == 0) {
+            plant.water_temp = (double)arg;
+            plant_sync_to_io(&plant, &cpu);
+            printf("Water temperature injected: %d C\n", arg);
+            print_dashboard(&cpu, &plant);
+        } else if (strcmp(cmd, "step") == 0) {
+            int steps = (n > 1 && arg > 0) ? arg : 1;
             for (int i = 0; i < steps; i++) {
                 if (cpu.halted) break;
                 cpu_step(&cpu);
                 plant_step(&plant, &cpu);
             }
             print_dashboard(&cpu, &plant);
+        } else if (strcmp(cmd, "run") == 0) {
+            if (!plant.start_button_pressed && cpu.io_ports[PORT_PROGRESS] == 0) {
+                printf("\n💡 Notice: Dishwasher is idling in STANDBY. Type 'start' to begin washing!\n");
+            }
+            int steps = (n > 1 && arg > 0) ? arg : 250;
+            for (int i = 0; i < steps; i++) {
+                if (cpu.halted) break;
+                cpu_step(&cpu);
+                plant_step(&plant, &cpu);
+            }
+            print_dashboard(&cpu, &plant);
+            if (cpu.halted) {
+                printf("\n🎉 Dishwasher cycle complete! CPU has halted cleanly.\n");
+            }
         } else if (strcmp(cmd, "status") == 0) {
             print_dashboard(&cpu, &plant);
         } else {
-            printf("Unknown command. Type 'step', 'run', 'door open', 'door close', or 'quit'.\n");
+            printf("Unknown command '%s'. Available: 'start', 'run [n]', 'step [n]', 'mode <0-2>', 'door open/close', 'status', 'quit'.\n", cmd);
         }
     }
 }
