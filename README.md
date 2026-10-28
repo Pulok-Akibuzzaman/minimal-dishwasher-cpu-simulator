@@ -25,6 +25,62 @@
 
 ---
 
+## 💡 The Plain-English Explanation: What is Actually Happening Here?
+
+If you are new to computer architecture or wondering what this project actually does, here is the simplest breakdown:
+
+### 1. The Purpose (Why did we build this?)
+Inside every modern household appliance (like a dishwasher, microwave, or washing machine), there is a tiny computer chip that controls the machine.
+* In standard projects, people just buy an existing chip from Intel, Microchip (PIC), or Arduino.
+* For **CSE360 Computer Architecture**, we did something much deeper: **we designed our very own custom 8-bit computer processor (CPU) from scratch on paper, and built a simulator in pure C to prove it works!**
+* We named our custom processor **AquaCore-8**. Its purpose in life is to be the intelligent brain of a dishwasher: read buttons/sensors, calculate temperatures, and turn on water taps, spray motors, heaters, and fans.
+
+### 2. How the Simulator Works (The Two Halves)
+Because this processor runs on your PC (`aquacore8_sim.exe`), the simulator consists of **two halves working together in a loop**:
+1. **The Virtual CPU (The Brain):**
+   * Reads instructions from its program memory one by one.
+   * Has 4 little "pockets" (Registers $R_0, R_1, R_2, R_3$) to hold numbers.
+   * Reads sensors using the `IN` instruction.
+   * Tells actuators to turn ON or OFF using the `OUT` instruction.
+2. **The Physical Plant (The Dishwasher Machine):**
+   * Simulates the real physical tub, heating element, and water pipes.
+   * When the CPU outputs `"Open Water Valve"`, the physical plant simulator increases the water level (+2 Liters per tick).
+   * When the CPU outputs `"Turn ON Heater"`, the physical plant simulator increases the water temperature (+0.1°C per tick).
+   * When the CPU asks `"What is the water temperature?"`, the physical plant feeds the current temperature back into the CPU!
+
+### 3. Is It a Real-Time Simulation?
+**Yes, it can run in two ways:**
+* **Interactive Real-Time Mode (`run.bat cli`):** Runs interactively. You can watch the real-time ASCII dashboard update on your screen, step cycle-by-cycle, or run with delays. You can type commands like `start`, `mode 1` (Eco), `door open`, or `temp 78` to inject faults and watch the CPU react in real time.
+* **Fast Batch Mode (`run.bat batch`):** Runs the full 1,254-cycle wash cycle in a fraction of a second (about 0.05 seconds) to automatically prove that the whole wash sequence completes from start to finish with 0 errors.
+
+### 4. What Are the Changes (Inputs & State Changes)?
+* **Sensor Inputs (What changes in the environment):**
+  * **Door Sensor:** Starts CLOSED; if opened by a curious user mid-wash, the CPU instantly freezes all pumps within 2 microseconds!
+  * **Water Level:** Starts at 0 (empty), fills up to 80 (full tub), and drains to 0 between wash phases.
+  * **Water Temperature:** Starts cold at 20°C (ambient tap water), heats up to 55°C (or 45°C in Eco mode), and cools down when drained.
+  * **Water Turbidity (Cloudiness):** Starts clean (0), gets dirty (up to 70–90) as food and sauce dissolve off the plates, and drops back to 0 as dirty water drains out.
+  * **Plate Cleanliness:** Plates start at 80% dirty and end at < 5% dirty (sparkling clean!).
+* **CPU Internal State (What changes inside the brain):**
+  * Program Counter ($PC$) moves from `0x00` through `0x95` as it executes instructions.
+  * Registers ($R_0..R_3$) hold temporary numbers (like the target temperature = 55).
+  * Flags ($Z, C, N, V$) update based on comparisons (e.g. Zero flag sets when a timer reaches 0).
+
+### 5. What Are the Outputs (What actually happens)?
+* **Physical Actuators Controlled:**
+  * **Water Inlet Valve:** Opens to let fresh tap water in.
+  * **Wash Spray Pump:** Blasts soapy water onto the plates.
+  * **1800W Heater:** Warms the water to dissolve grease.
+  * **Detergent Solenoid:** Clicks open to release the soap tablet (*CLICK!*).
+  * **Drain Pump:** Pumps dirty water down the kitchen drain pipe.
+  * **Drying Fan:** Blows warm air to dry the plates like a hairdryer.
+  * **Buzzer:** Beeps happily (*BEEP BEEP BEEP!*) when dinner plates are ready!
+* **Front-Panel Status LEDs:**
+  * `[STANDBY]` ➔ `[PRE-WASH]` ➔ `[MAIN WASH]` ➔ `[RINSE]` ➔ `[DRYING]` ➔ `[CYCLE COMPLETE!]`.
+  * `[DOOR AJAR WARN]`: Flashes if someone opens the door mid-wash.
+  * `[FAULT RED LED]`: Illuminates if water exceeds safe thermal limits (>75°C).
+
+---
+
 ## 🌟 Executive Summary
 
 **AquaCore-8** is an application-specific 8-bit Harvard RISC-style microprocessor engineered from the ground up to automate complex household appliances. Configured here for an intelligent dishwasher, AquaCore-8 interfaces with real-time sensors (water temperature, fluid level, optical turbidity, door safety switch, puddle leak sensor) to dynamically modulate high-power actuators (inlet valves, wash pumps, 1800W heating elements, detergent/rinse-aid solenoids, drying blowers, and alarm buzzers).
