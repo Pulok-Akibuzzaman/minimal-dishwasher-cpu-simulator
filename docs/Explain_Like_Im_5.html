@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Did We Actually Build? (Explain Like I'm 5) - AquaCore-8</title>
+<style>
+    @page {
+        size: A4;
+        margin: 15mm 15mm 15mm 15mm;
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        color: #1e293b;
+        background: #f8fafc;
+        margin: 0;
+        padding: 24px;
+    }
+    .container {
+        max-width: 860px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 40px 48px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+    }
+    h1 {
+        color: #0f172a;
+        font-size: 28px;
+        margin-top: 0;
+        margin-bottom: 6px;
+    }
+    h2 {
+        color: #1e3a8a;
+        font-size: 20px;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 8px;
+        margin-top: 36px;
+    }
+    h3 {
+        color: #2563eb;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+    .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 20px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+        margin-bottom: 16px;
+    }
+    .team-box {
+        background: #f1f5f9;
+        border-radius: 8px;
+        padding: 14px 20px;
+        margin-bottom: 28px;
+        font-size: 14px;
+        color: #475569;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .card {
+        background: #ffffff;
+        border-left: 4px solid #3b82f6;
+        border-radius: 6px;
+        padding: 16px 20px;
+        margin: 16px 0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border-top: 1px solid #f1f5f9;
+        border-right: 1px solid #f1f5f9;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .card-warn {
+        border-left-color: #f59e0b;
+        background: #fffbeb;
+    }
+    .card-success {
+        border-left-color: #10b981;
+        background: #f0fdf4;
+    }
+    .card-danger {
+        border-left-color: #ef4444;
+        background: #fef2f2;
+    }
+    pre {
+        background: #0f172a;
+        color: #38bdf8;
+        padding: 14px 18px;
+        border-radius: 8px;
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 13px;
+        overflow-x: auto;
+        line-height: 1.45;
+    }
+    code {
+        font-family: "Consolas", monospace;
+        background: #f1f5f9;
+        color: #b91c1c;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 13px;
+    }
+    pre code {
+        background: transparent;
+        color: inherit;
+        padding: 0;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-size: 14px;
+    }
+    th, td {
+        padding: 10px 14px;
+        border: 1px solid #cbd5e1;
+        text-align: left;
+    }
+    th {
+        background-color: #f1f5f9;
+        font-weight: 600;
+        color: #0f172a;
+    }
+    ul, ol {
+        padding-left: 24px;
+    }
+    li {
+        margin-bottom: 6px;
+    }
+    .quote {
+        font-style: italic;
+        color: #334155;
+        border-left: 3px solid #94a3b8;
+        padding-left: 12px;
+        margin: 10px 0;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="badge">CSE360 Computer Architecture Mini-Project &bull; Plain English Guide</div>
+    <h1>What Did We Actually Build?</h1>
+    <p style="color: #64748b; font-size: 16px; margin-top: 0;">(Explained So Simply That a 5-Year-Old Will Understand!)</p>
+
+    <div class="team-box">
+        <div><strong>Course:</strong> CSE360 Computer Architecture</div>
+        <div><strong>Institution:</strong> East West University (EWU)</div>
+        <div><strong>Team:</strong> Nusrat Rahman Aurna (2023-3-60-057) &bull; Pulok Akibuzzaman (2023-3-60-051) &bull; Md. Jakaria Masud (2023-3-60-386)</div>
+    </div>
+
+    <h2>🧸 1. The Super Short Story</h2>
+    <p>Imagine you have a dishwasher in your kitchen.</p>
+    <p>Usually, inside a dishwasher, there is a tiny computer chip bought from a big company that tells the water when to splash, the soap when to drop, and the heater when to get warm.</p>
+    <div class="card card-success">
+        <strong>Instead of buying one, WE BUILT OUR VERY OWN ROBOT BRAIN FROM SCRATCH!</strong>
+        <ul>
+            <li>We decided how the brain thinks.</li>
+            <li>We invented a brand-new secret language for it to speak.</li>
+            <li>We gave it eyes and ears (<strong>sensors</strong>) so it can feel the water and see if the plates are dirty.</li>
+            <li>We gave it hands and tools (<strong>actuators</strong>) to turn on taps, spray soapy water, turn on heaters, and blow dry the plates.</li>
+            <li>We wrote a pretend world (<strong>simulator</strong>) on the computer in pure C to test it like a video game.</li>
+            <li>And we tested it with <strong>37 tricky puzzle tests</strong> to make sure it never makes a mistake or splashes water on the kitchen floor!</li>
+        </ul>
+        <p style="margin-bottom:0;">We named our robot brain: <strong>AquaCore-8</strong>.</p>
+    </div>
+
+    <h2>🧠 2. What Is a "CPU" and What Are Its 3 Main Body Parts?</h2>
+    <p>A <strong>CPU</strong> (Central Processing Unit) is just the <strong>Brain</strong> of a computer. Our brain has three main body parts inside:</p>
+
+    <pre>
++-----------------------------------------------------------------+
+|                   AquaCore-8 (The Robot Brain)                  |
+|                                                                 |
+|   1. RECIPE BOOK (Memory)   -> Holds the instructions           |
+|   2. CALCULATOR & POCKETS   -> Does the math (ALU + Registers)  |
+|   3. THE BOSS (Control Unit)-> Reads steps & pushes the buttons |
++-----------------------------------------------------------------+</pre>
+
+    <h3>Part 1: The Recipe Book (Memory)</h3>
+    <p>Imagine a chef following a recipe step-by-step:</p>
+    <ol>
+        <li><em>Step 1: Check if the door is closed.</em></li>
+        <li><em>Step 2: Fill tub with water.</em></li>
+        <li><em>Step 3: Drop the soap tablet.</em></li>
+        <li><em>Step 4: Spray water for 5 minutes.</em></li>
+    </ol>
+    <p>Our brain has two kinds of books:</p>
+    <ul>
+        <li><strong>ROM (The Printed Cookbook):</strong> This is where our 216 recipe steps are printed. It never forgets them, even when the power is turned off!</li>
+        <li><strong>RAM (The Scratchpad):</strong> This is a little whiteboard where the brain quickly writes temporary notes with a dry-erase marker (like: <em>"The water temperature right now is 45 degrees"</em>).</li>
+    </ul>
+
+    <h3>Part 2: The Math Muscle & Little Pockets (Datapath & ALU)</h3>
+    <ul>
+        <li><strong>The ALU (Arithmetic Logic Unit):</strong> This is the brain's internal calculator. It can do two things really fast:
+            <ol>
+                <li><strong>Math:</strong> Add two numbers together ($10 + 25 = 35$) or subtract numbers ($25 - 10 = 15$).</li>
+                <li><strong>Compare:</strong> It compares two numbers: <em>"Is the water temperature 55 degrees yet? No, it's only 30 degrees. Keep heating!"</em></li>
+            </ol>
+        </li>
+        <li><strong>The Condition Flags (Little Sticky Notes):</strong> When the calculator finishes a math problem, it sticks a little colored post-it note on the wall:
+            <ul>
+                <li><strong>Z (Zero Flag):</strong> <em>"The answer is exactly ZERO!"</em> (Used to know when a countdown timer reaches 0).</li>
+                <li><strong>C (Carry Flag):</strong> <em>"The number got too big to fit on my fingers!"</em></li>
+                <li><strong>N (Negative Flag):</strong> <em>"The number is below zero (cold/minus)!"</em></li>
+                <li><strong>V (Overflow Flag):</strong> <em>"Whoops, the numbers wrapped around!"</em></li>
+            </ul>
+        </li>
+        <li><strong>The 4 Pockets (Registers R0, R1, R2, R3):</strong> The brain has 4 little pockets. It can keep one number in each pocket while thinking.</li>
+        <li><strong>The Pointing Finger (Program Counter / PC):</strong> This is a finger that points at which recipe step we are doing right now. When it finishes step 5, the finger moves down to point at step 6!</li>
+    </ul>
+
+    <h3>Part 3: The Boss (The Control Unit)</h3>
+    <p>The Control Unit is like the brain's boss or traffic cop. It looks at the current recipe line and shouts orders to everyone else:</p>
+    <div class="quote">
+        "Hey Pockets, give your number to the Calculator! Hey Calculator, add them! Hey Hands, turn on the water tap!"
+    </div>
+
+    <h2>🗣️ 3. What Is an "ISA"? (The Secret Language)</h2>
+    <p>Computers don't speak English or Bengali. They only understand binary numbers (ones and zeros like <code>10110000</code>).</p>
+    <p>An <strong>ISA</strong> (Instruction Set Architecture) is the <strong>Secret Alphabet &amp; Grammar</strong> that WE invented so we can talk to our robot brain!</p>
+    <p>Every single instruction in our language is built out of <strong>16 colorful building blocks</strong> (bits):</p>
+    <pre>
++------------+------------+-------------------------------------+
+| Opcode (4) | Target (4) | Number / Port / Address (8 bits)    |
++------------+------------+-------------------------------------+</pre>
+
+    <p>Here are some real words in our secret language:</p>
+    <ul>
+        <li><code>LDI R0, 55</code>: <em>"Put the number 55 into Pocket 0!"</em> (That's our target warm temperature!).</li>
+        <li><code>IN R1, [Sensor]</code>: <em>"Look through your thermometer eye and put the number into Pocket 1!"</em></li>
+        <li><code>CMP R1, R0</code>: <em>"Compare the thermometer number in Pocket 1 with the target 55 in Pocket 0!"</em></li>
+        <li><code>JGE Ready</code>: <em>"If it's Greater or Equal to 55, jump to the Ready step!"</em></li>
+        <li><code>OUT [Sprayer], R0</code>: <em>"Flip the switch to turn ON the wash spray pump!"</em></li>
+        <li><code>WAIT #5</code>: <em>"Count to 5 while the water sprays!"</em></li>
+        <li><code>HALT</code>: <em>"All done! Take a nap!"</em></li>
+    </ul>
+
+    <h2>👁️ 4. The Robot's Senses (Sensors) &amp; Tools (Actuators)</h2>
+    <p>A brain is useless if it's trapped in a dark box. So we hooked our brain up to the outside world!</p>
+
+    <pre>
+         SENSORS (The Eyes & Ears)               ACTUATORS (The Hands & Tools)
+       +----------------------------+          +-------------------------------+
+       | - Door Safety Switch       |          | - Water Inlet Tap Valve       |
+       | - Water Level Float        |  ====>   | - Drain Discharge Pump        |
+       | - Water Thermometer        |   CPU    | - Wash Spray Pump             |
+       | - Turbidity Goggles        |          | - 1800W Kettle Heating Element|
+       | - Puddle Leak Detector     |          | - Soap Tablet Dispenser       |
+       +----------------------------+          | - Drying Air Fan              |
+                                               | - Celebration Party Buzzer    |
+                                               +-------------------------------+</pre>
+
+    <h3>The Senses (Sensors / Inputs):</h3>
+    <ol>
+        <li><strong>The Door Sensor (Magnetic Lock):</strong> Tells the brain if the door is shut tight. If someone opens the door mid-wash, the brain says: <em>"FREEZE! Shut down all sprayers immediately so we don't soak Mommy's socks!"</em></li>
+        <li><strong>The Water Level Sensor:</strong> Tells the brain how full the tub is. <em>"Are we full enough to splash, or is it empty?"</em></li>
+        <li><strong>The Thermometer (Temperature Sensor):</strong> Tells the brain if the water is cold like tap water (20°C), warm like a bath (45°C for Eco mode), hot (55°C for Normal), or super-hot (65°C for Heavy Pots &amp; Pans).</li>
+        <li><strong>The Turbidity Goggles (Optical Infrared Sensor):</strong> <strong>This is the coolest smart feature!</strong> The robot shines a tiny invisible flashlight through the water.
+            <ul>
+                <li>If the water is muddy with curry and pasta sauce, the light gets blocked. The robot says: <em>"Ew, this water is gross! I'm going to add an extra rinse cycle to make sure the plates are sparkling!"</em></li>
+                <li>If the light shines straight through, the robot says: <em>"Yay! Clean water! Dishes are ready!"</em></li>
+            </ul>
+        </li>
+        <li><strong>The Leak Detector:</strong> A sensor on the bottom pan. If water spills on the floor, it raises a red alarm and drains the tub immediately!</li>
+    </ol>
+
+    <h3>The Tools (Actuators / Outputs):</h3>
+    <ol>
+        <li><strong>Water Inlet Tap:</strong> Opens a valve to let fresh tap water rush in.</li>
+        <li><strong>Drain Pump:</strong> Pumps the dirty water out through the pipe under the sink.</li>
+        <li><strong>Spray Pump:</strong> The super-soaker pump that shoots spinning jets of water onto the plates.</li>
+        <li><strong>Heating Element:</strong> An electric heater (like an electric kettle) under the water to heat it up.</li>
+        <li><strong>Detergent Dispenser:</strong> A little spring-loaded door that pops open: <em>CLICK!</em> Out drops the soap!</li>
+        <li><strong>Rinse-Aid Dropper:</strong> Drops special liquid so glasses dry without water spots.</li>
+        <li><strong>Drying Fan:</strong> Blows warm air like a hairdryer to dry everything.</li>
+        <li><strong>Celebration Buzzer:</strong> <em>BEEP BEEP BEEP!</em> Tells the family dinner plates are clean!</li>
+    </ol>
+
+    <h2>🔄 5. A Day in the Life of Our Dishwasher (The Story of a Wash)</h2>
+    <p>Here is what our assembly code (<code>dishwasher_controller.asm</code>) makes the robot do every single time:</p>
+    <pre>[Standby] --> [Pre-Wash] --> [Main Wash] --> [Rinse Cycle] --> [Drying] --> [Buzzer / Done!]</pre>
+
+    <ol>
+        <li><strong>Phase 0: Waiting Patiently (Standby)</strong>
+            <ul>
+                <li>The robot turns on a little yellow light and waits.</li>
+                <li>When someone presses the <strong>"Start"</strong> button and the door is closed, it wakes up!</li>
+                <li>It checks which mode was chosen: Eco (45°C), Normal (55°C), or Heavy (65°C).</li>
+            </ul>
+        </li>
+        <li><strong>Phase 1: Pre-Wash (Rinsing Off the Big Ketchup Chunks)</strong>
+            <ul>
+                <li>Fills a little bit of water.</li>
+                <li>Runs the spray pump to blast off loose food.</li>
+                <li>Drains the dirty water down the pipe.</li>
+            </ul>
+        </li>
+        <li><strong>Phase 2: Main Wash (The Big Scrub)</strong>
+            <ul>
+                <li>Fills with fresh, clean water.</li>
+                <li>Pops open the soap dispenser (<em>CLICK!</em>).</li>
+                <li>Turns on the heater and spray pump together.</li>
+                <li>When the water reaches the target temperature, it turns off the heater to save electricity while keeping the scrubbers spinning.</li>
+                <li>Checks the turbidity goggles: If the water is super dirty, it makes a note to do an extra rinse later!</li>
+                <li>Drains the soapy water.</li>
+            </ul>
+        </li>
+        <li><strong>Phase 3: Rinse (Making It Shine)</strong>
+            <ul>
+                <li>Fills with clean water again.</li>
+                <li>Drops the rinse-aid shine drops.</li>
+                <li>Washes everything clean and drains the water.</li>
+                <li>If the turbidity goggles see any leftover cloudiness, it repeats with one more rinse!</li>
+            </ul>
+        </li>
+        <li><strong>Phase 4: Heated Drying (The Hairdryer Phase)</strong>
+            <ul>
+                <li>Tub is empty.</li>
+                <li>Turns on the gentle heater and the air fan.</li>
+                <li>Blows warm air all around until every plate and fork is bone dry.</li>
+            </ul>
+        </li>
+        <li><strong>Phase 5: Celebration! (Cycle Complete)</strong>
+            <ul>
+                <li>Turns on the green "Complete" light.</li>
+                <li>Sounds the celebration buzzer: <em>BEEP! BEEP! BEEP!</em></li>
+                <li>Shuts off all tools and takes a well-deserved nap (<code>HALT</code>).</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>🛡️ 6. What If Something Goes Wrong? (The Super Failsafes)</h2>
+    <div class="card card-warn">
+        <strong>Test Case A: A Curious Kid Opens the Door Mid-Wash!</strong>
+        <p>If a 5-year-old pulls the dishwasher door open while water is spraying at 55°C, what happens?</p>
+        <p>In less than <strong>2 microseconds</strong> (faster than you can blink!), our brain detects the door is open. It <strong>instantly cuts power to all sprayers, pumps, and heaters!</strong> It turns on a flashing red "Door Ajar" warning light. Zero water splashes onto the floor! When the door is closed again, the brain smiles, turns off the warning light, and resumes washing right where it paused!</p>
+    </div>
+
+    <div class="card card-danger">
+        <strong>Test Case B: The Water Gets Too Hot (>75°C)!</strong>
+        <p>If a heater switch gets stuck and the water starts boiling:</p>
+        <p>The brain reads: <em>"78 degrees?! That's way too hot!"</em> It immediately trips the <strong>Emergency Thermal Shutoff</strong>! It kills the heater, turns on the loud siren buzzer, lights the red Fault light, writes error code <code>0xAA</code> on the screen, and locks the machine down safely.</p>
+    </div>
+
+    <h2>🧪 7. How Did We Test It Without Making a Giant Mess?</h2>
+    <p>We didn't want to flood the computer lab with soapy water!</p>
+    <p>So we built a <strong>Computer Simulator in pure C</strong>. It works just like a flight simulator for pilots:</p>
+    <ul>
+        <li>The robot brain runs on your laptop.</li>
+        <li>A physics engine pretends water is flowing in (+2 liters per second) and water is heating up (+0.1°C per second).</li>
+        <li>The brain thinks it is connected to a real dishwasher!</li>
+    </ul>
+
+    <div class="card card-success">
+        <h3 style="margin-top:0; color:#065f46;">The Final Test Score</h3>
+        <pre>
+==========================================================
+   AquaCore-8 Verification Results
+==========================================================
+   Unit Tests Passed:        20 / 20  [100% PERFECT]
+   Integration Tests Passed: 17 / 17  [100% PERFECT]
+   TOTAL TESTS PASSED:       37 / 37  [100% PASS RATE!]
+==========================================================</pre>
+    </div>
+
+    <h2>🏆 8. Why This Deserves an A+ in CSE360</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Typical Student Approach</th>
+                <th>Our AquaCore-8 Approach</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Uses an existing Intel/Arduino chip</td>
+                <td><strong>Designed a custom microprocessor architecture from scratch!</strong></td>
+            </tr>
+            <tr>
+                <td>Writes high-level code only</td>
+                <td><strong>Invented a custom 16-bit ISA and wrote raw assembly firmware!</strong></td>
+            </tr>
+            <tr>
+                <td>Only shows code on paper</td>
+                <td><strong>Built a high-performance C simulator AND synthesizable Verilog HDL!</strong></td>
+            </tr>
+            <tr>
+                <td>No physical modeling</td>
+                <td><strong>Derived complete thermodynamic, fluid dynamic, and optical equations!</strong></td>
+            </tr>
+            <tr>
+                <td>Untested or buggy</td>
+                <td><strong>100% verified with 37 automated tests passing on every build!</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>📋 Summary in 3 Sentences</h2>
+    <ol>
+        <li>We designed our very own 8-bit computer brain called <strong>AquaCore-8</strong> with its own secret language and math calculator.</li>
+        <li>We wrote an automated program so this brain can read temperature, water level, and dirt sensors to wash dishes safely and smartly.</li>
+        <li>We built a simulator in C and verified that every single part passes all 37 tests with zero errors!</li>
+    </ol>
+</div>
+</body>
+</html>

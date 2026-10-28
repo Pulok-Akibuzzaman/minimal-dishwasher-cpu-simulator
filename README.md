@@ -1,0 +1,197 @@
+# AquaCore-8: Minimal CPU Architecture for Automated Dishwasher Control
+### CSE360 – Computer Architecture Mini-Project | East West University (EWU)
+
+---
+
+## 👥 Project Team & Submission Details
+
+* **Institution:** East West University (EWU), Dhaka, Bangladesh
+* **Department:** Department of Computer Science and Engineering
+* **Course:** CSE360 – Computer Architecture
+* **Project Title:** *Suggest and design a minimal CPU architecture, including ISA, datapath, and control unit, for automating dishwasher control functions with sensor inputs, and verify it with a simulator.*
+
+### Team Members:
+| Name | Student ID | Email / Contribution |
+|:---|:---|:---|
+| **Nusrat Rahman Aurna** | `2023-3-60-057` | Architecture Design, Control Unit Logic & Verilog RTL |
+| **Pulok Akibuzzaman** | `2023-3-60-051` | Pure C Simulation Engine, Cyber-Physical Plant & Test Suite |
+| **Md. Jakaria Masud** | `2023-3-60-386` | Dishwasher Assembly Firmware, Physical Models & Documentation |
+
+---
+
+## 🌟 Executive Summary
+
+**AquaCore-8** is an application-specific 8-bit Harvard RISC-style microprocessor engineered from the ground up to automate complex household appliances. Configured here for an intelligent dishwasher, AquaCore-8 interfaces with real-time sensors (water temperature, fluid level, optical turbidity, door safety switch, puddle leak sensor) to dynamically modulate high-power actuators (inlet valves, wash pumps, 1800W heating elements, detergent/rinse-aid solenoids, drying blowers, and alarm buzzers).
+
+### Core Highlights:
+* **Implemented Exclusively in Pure C (C99):** Lightweight, zero third-party dependencies, bare-metal hardware mapping (`uint8_t`, `uint16_t`), and nanosecond-fast execution.
+* **Custom 16-Bit Instruction Set (ISA):** 16 primary opcodes supporting R-Type arithmetic/logic, I-Type immediates, memory Load/Store, Port I/O, Subroutine Call/Ret, and conditional branches.
+* **Single-Cycle Datapath:** Hardwired control unit ($CPI = 1.0$), 4 general-purpose registers (`R0`–`R3`), an 8-bit ALU with Status Flags ($Z, C, N, V$), and a 16-level hardware return stack.
+* **Cyber-Physical Plant Simulation:** First-principles fluid dynamics, thermodynamic heating ($1800\text{ W}$ element), and Beer-Lambert optical turbidity equations.
+* **Intelligent Assembly Firmware:** 216-instruction program featuring adaptive wash cycles that detect water soiling via optical sensors and dynamically trigger secondary rinse phases.
+* **37 Automated Tests:** 100% pass rate across 20 CPU unit tests and 17 full-cycle cyber-physical integration & fault injection scenarios.
+* **Printable A4 Soft-Binding Report:** Compliant with East West University guidelines, featuring 38 mathematically rigorous equations rendered in LaTeX/MathJax.
+
+---
+
+## 🚀 Quick Start Guide
+
+### Option 1: Master Interactive Menu (Recommended)
+Simply double-click [`run.bat`](run.bat) in Windows Explorer or execute in terminal:
+```cmd
+run.bat
+```
+This launches an interactive menu where you can run tests, start the terminal monitor, run full wash cycle traces, or open the HTML documentation with a single keypress!
+
+---
+
+### Option 2: Automated Build & Verification (One Click)
+To compile the C source files and run the full 37-test suite:
+```cmd
+build.bat
+```
+* Compiles `src/*.c` using GCC into `aquacore8_sim.exe`.
+* Executes all 20 CPU architecture tests and all 17 plant integration tests.
+* Confirms 100% test pass rate in less than 1 second!
+
+---
+
+### Option 3: Command-Line Flags
+You can run specific simulator modes directly from the terminal:
+```cmd
+run.bat test     # Execute all 37 unit and integration tests
+run.bat batch    # Run end-to-end wash cycle batch trace (Pre-Wash -> Main -> Rinse -> Dry)
+run.bat cli      # Launch interactive real-time cycle visualizer
+```
+
+---
+
+## 🧪 Verification & Test Results
+
+The architecture and physical plant are verified against **37 automated regression tests** with a **100% pass rate**:
+
+```text
+===============================================================================
+               AquaCore-8 Verification & Test Suite Summary
+===============================================================================
+[PASS] Unit Test 01: ADD R2 = 10 + 25                       (Got: 0x23)
+[PASS] Unit Test 02: SUB R3 = 25 - 10                       (Got: 0x0F)
+[PASS] Unit Test 03: Zero Flag state inspection             (Z = False)
+[PASS] Unit Test 04: Negative Flag state inspection         (N = False)
+[PASS] Unit Test 05: 8-Bit Overflow Wrap (0xFF + 1 = 0x00)  (Got: 0x00)
+[PASS] Unit Test 06: Zero Flag assertion on zero result     (Z = True)
+[PASS] Unit Test 07: Carry Flag assertion on 8-bit carry    (C = True)
+[PASS] Unit Test 08: Bitwise AND Logic (0xAC & 0xF0)        (Got: 0xA0)
+[PASS] Unit Test 09: Bitwise OR Logic  (0xAC | 0xF0)        (Got: 0xFC)
+[PASS] Unit Test 10: Logical Shift Left (0x04 << 1)         (Got: 0x08)
+[PASS] Unit Test 11: Logical Shift Right (0x04 >> 1)        (Got: 0x02)
+[PASS] Unit Test 12: Immediate Arithmetic (ADDI & SUBI)     (Got: 0x0C)
+[PASS] Unit Test 13: RAM Store & Load verification          (Got: 0x42)
+[PASS] Unit Test 14: Direct RAM Cell Integrity [0x50]       (Got: 0x42)
+[PASS] Unit Test 15: Sensor Input Port Read (IN)            (Got: 0x3C)
+[PASS] Unit Test 16: Actuator Output Port Write (OUT)       (Got: 0x3C)
+[PASS] Unit Test 17: Branch Loop Termination at Zero        (Got: 0x00)
+[PASS] Unit Test 18: Branch Exit PC Alignment               (PC  = 0x04)
+[PASS] Unit Test 19: Hardware Subroutine CALL & RET         (Got: 0x20)
+[PASS] Unit Test 20: Stack Pointer Return Cleanliness       (SP  = 0x00)
+-------------------------------------------------------------------------------
+Unit Tests Passed: 20 / 20  [100% PERFECT]
+-------------------------------------------------------------------------------
+[PASS] Integration 01: Complete Normal Wash Cycle Execution
+[PASS] Integration 02: Phase 1 Pre-Wash Inflow & Drainage
+[PASS] Integration 03: Phase 2 Main Wash Thermal Ramp (>= 54°C)
+[PASS] Integration 04: Detergent Solenoid Release
+[PASS] Integration 05: Phase 3 Adaptive Multi-Rinse Cycle
+[PASS] Integration 06: Phase 4 Heated Air Drying
+[PASS] Integration 07: Phase 5 Cycle Complete Green LED
+[PASS] Integration 08: Completion Notification Buzzer
+[PASS] Integration 09: Final Plate Cleanliness (< 10% Residual Soil)
+[PASS] Integration 10: Eco Mode Wash (Target 45°C Dynamic Regulation)
+[PASS] Integration 11: Eco Mode Successful Completion
+[PASS] Integration 12: Mid-Wash Door Opening Emergency Interlock
+[PASS] Integration 13: Zero-Latency Actuator Cutoff on Open Door
+[PASS] Integration 14: Front-Panel Flashing Door Warning LED
+[PASS] Integration 15: Seamless Resumption after Door Closure
+[PASS] Integration 16: Overheat Emergency Trip (> 75°C Water Temp)
+[PASS] Integration 17: Red Fault LED & Error Code 0xAA Latched
+-------------------------------------------------------------------------------
+Integration Tests Passed: 17 / 17  [100% PERFECT]
+===============================================================================
+TOTAL TEST PASS RATE: 37 / 37 (100% SUCCESS)
+===============================================================================
+```
+
+---
+
+## 📂 Project Directory Structure
+
+```text
+Mini-Project/
+├── run.bat                           ; Master interactive menu & mode dispatcher
+├── build.bat                         ; One-click C compiler & 37-test runner
+├── aquacore8_sim.exe                 ; Compiled high-performance simulator executable
+├── README.md                         ; Master project README & documentation index
+├── Miniproject description.pdf       ; Course assignment requirements & guidelines
+│
+├── src/                              ; Pure C Simulation Engine & Test Harnesses
+│   ├── aquacore8.h                   ; CPU core, register, memory & I/O definitions
+│   ├── aquacore8.c                   ; Execution core, ALU logic & machine disassembler
+│   ├── dishwasher_plant.h            ; Cyber-physical fluid & thermodynamic header
+│   ├── dishwasher_plant.c            ; Water heating, inflow/drain & optical equations
+│   ├── tests.c                       ; 37 automated unit and full integration tests
+│   └── main.c                        ; Interactive CLI dashboard & batch runner
+│
+├── programs/                         ; Firmware & Machine Code
+│   ├── dishwasher_controller.asm     ; Complete assembly firmware (216 instructions)
+│   └── dishwasher_controller.hex     ; Compiled 16-bit hexadecimal machine code
+│
+├── verilog/                          ; Synthesizable Hardware RTL Design
+│   ├── cpu_top.v                     ; Top-level synthesizable processor
+│   ├── alu.v                         ; 8-bit Arithmetic Logic Unit with flags
+│   ├── control_unit.v                ; Hardwired single-cycle instruction decoder
+│   ├── datapath.v                    ; PC, ALU, Register File, Stack, and MUXes
+│   ├── register_file.v               ; 4 x 8-bit register bank (R0..R3)
+│   ├── instruction_memory.v          ; 256 x 16-bit ROM module
+│   ├── data_memory.v                 ; 256 x 8-bit RAM module
+│   ├── io_controller.v               ; Port-mapped sensor & actuator registers
+│   └── dishwasher_tb.v               ; Hardware testbench & timing stimulus
+│
+└── docs/                             ; Formal Academic Documentation
+    ├── Project_Report_CSE360.md      ; Full 9-section report in Markdown
+    ├── Project_Report_CSE360.html    ; Printable A4 formatted report (Ctrl+P -> PDF)
+    ├── Explain_Like_Im_5.md          ; "Explain Like I'm 5" intuitive concept breakdown
+    ├── Explain_Like_Im_5.html        ; Printable web version of the ELI5 guide
+    ├── ISA_Specification.md          ; Complete opcode and instruction set reference
+    └── Architecture_Diagrams.md      ; Mermaid schematics & datapath diagrams
+```
+
+---
+
+## 📖 Key Documentation Links
+
+1. **[Academic Project Report (HTML)](docs/Project_Report_CSE360.html)**
+   * Formatted strictly to the 9-section CSE360 syllabus outline.
+   * Includes the official EWU front cover, student names/IDs, high-resolution datapath schematics, 38 LaTeX/MathJax formulas, result tables, and bibliography.
+   * Ready for direct A4 soft-binding print (`Ctrl + P` in any browser).
+2. **[Explain Like I'm 5 (ELI5) Guide (HTML)](docs/Explain_Like_Im_5.html) | [(Markdown)](docs/Explain_Like_Im_5.md)**
+   * A friendly, engaging guide explaining every component using simple everyday metaphors (the cookbook, the whiteboard, the little pockets, the turbidity goggles, and kid safety).
+3. **[Instruction Set Architecture (ISA) Specification (Markdown)](docs/ISA_Specification.md)**
+   * Complete bitfield encodings, opcodes, register conventions, and cycle timings.
+4. **[Micro-Architecture & Datapath Diagrams (Markdown)](docs/Architecture_Diagrams.md)**
+   * Hardware block diagrams and finite-state machine (FSM) representations.
+
+---
+
+## 🖨️ Printing the Report for Soft Binding Submission
+
+To produce the official physical report for submission:
+1. Open [`docs/Project_Report_CSE360.html`](docs/Project_Report_CSE360.html) in **Google Chrome** or **Microsoft Edge**.
+2. Press **`Ctrl + P`** (Print).
+3. Set **Destination** to `Save as PDF` (or select your local printer).
+4. Set **Paper size** to `A4`.
+5. Under **More settings**, ensure **Background graphics** is **checked**.
+6. Click **Save** / **Print** and submit for soft binding!
+
+---
+
+*Developed with pride for CSE360 Computer Architecture, Department of Computer Science and Engineering, East West University.*
