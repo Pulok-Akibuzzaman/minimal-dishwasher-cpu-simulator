@@ -106,6 +106,16 @@ Because our custom microprocessor runs on a PC (`aquacore8_sim.exe`), the simula
 3. **Automated Verification Mode (`build.bat` or `run.bat test`):**
    * Executes all 37 tests (20 CPU unit tests + 17 integration & safety tests) in under 1 second to prove 100% bug-free behavior.
 
+### Interactive Simulator Commands Cheat Sheet:
+* **`start`**: Presses the Start button and steps 50 cycles directly into Pre-Wash.
+* **`run [n]`**: Runs $n$ clock cycles (default: 250).
+* **`step [n]`**: Steps $n$ single clock cycles for micro-stepping inspection.
+* **`mode <0|1|2>`**: Selects wash mode (0=Normal 55°C, 1=Eco 45°C, 2=Heavy 65°C). Set before `start`!
+* **`door open` / `door close`**: Triggers door safety interlock mid-wash and resumes when closed.
+* **`temp <celsius>`**: Injects custom temperature (e.g. `temp 78` trips emergency overheat protection).
+* **`status`**: Re-prints the full dashboard.
+* **`quit`**: Exits the simulator.
+
 ---
 
 ## 🔄 5. What Changes and What Are the Outputs?

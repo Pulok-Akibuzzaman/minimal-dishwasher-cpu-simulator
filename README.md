@@ -128,6 +128,100 @@ run.bat cli      # Launch interactive real-time cycle visualizer
 
 ---
 
+## 🎮 Hands-On Interactive Simulator Guide (With Examples)
+
+You can interact with the dishwasher in real time just like a physical appliance in your kitchen!
+
+### How to Launch:
+1. Double-click [`run.bat`](run.bat) and select `[2] Launch Interactive C Terminal Simulator`, OR
+2. In your terminal, run:
+   ```cmd
+   run.bat cli
+   ```
+   *(or directly: `aquacore8_sim.exe`)*
+
+---
+
+### 🕹️ Complete Interactive Command Reference
+
+| Command | Arguments | Description | Example |
+|:---|:---|:---|:---|
+| **`start`** | *(none)* | Pushes the Start Button; CPU exits standby, configures the cycle, and enters Pre-Wash | `start` |
+| **`run`** | `[cycles]` | Advances simulation forward by $N$ clock cycles (default: 250) | `run 300` |
+| **`step`** | `[cycles]` | Executes $N$ single clock cycles (default: 1) for cycle-by-cycle micro-inspection | `step 5` |
+| **`mode`** | `<0 \| 1 \| 2>` | Sets wash mode (must be configured before pressing `start`):<br>• `0`: **Normal Wash** (55°C, standard wash)<br>• `1`: **Eco Wash** (45°C, saves power and water)<br>• `2`: **Heavy Wash** (65°C, intensive sanitize) | `mode 1` |
+| **`door open`** | *(none)* | Simulates opening the door mid-wash; instantly cuts power to actuators (safety interlock) | `door open` |
+| **`door close`** | *(none)* | Re-closes the door; cycle resumes seamlessly right where it paused | `door close` |
+| **`temp`** | `<celsius>` | Injects an external water temperature sensor reading | `temp 78` |
+| **`status`** | *(none)* | Re-displays the real-time visual dashboard (registers, sensors, actuators, LEDs) | `status` |
+| **`quit`** / **`exit`** | *(none)* | Exits the simulator back to the terminal | `quit` |
+
+---
+
+### 🧪 4 Interactive Scenarios to Try (Step-by-Step Examples)
+
+#### Scenario 1: Run a Full Normal Wash Cycle (Start to Finish)
+```text
+AquaCore8> start
+>>> Start button pressed! Entering Pre-Wash phase...
+    (Notice: Inlet Valve turns ON [*], Water Level begins rising, LED shows [PRE-WASH])
+
+AquaCore8> run 300
+    (Water reaches target level 80/128, Main Wash begins, Detergent Dispenser clicks open [*], Heater turns ON [*])
+
+AquaCore8> run 300
+    (Heater warms water to 55°C, spray circulation cleans plates, dirty water drains out [*])
+
+AquaCore8> run 300
+    (Fresh water refills, Rinse aid dispenses [*], dynamic turbidity check confirms dishes are clean)
+
+AquaCore8> run 200
+    (Drying fan blows warm air [*], chime buzzer sounds [*], status LED displays [CYCLE COMPLETE!], CPU halts)
+```
+
+#### Scenario 2: Run in Eco Wash Mode (Energy Saving at 45°C)
+*Eco mode lowers the water level and target temperature from 55°C to 45°C to conserve electricity and water.*
+```text
+AquaCore8> mode 1
+Mode set to: 1 [Eco (45C)]
+
+AquaCore8> start
+>>> Start button pressed! Entering Pre-Wash phase...
+
+AquaCore8> run 500
+    (Notice: The water temperature regulates and caps around 45°C instead of 55°C!)
+```
+
+#### Scenario 3: Test Child Safety (Door Opened Mid-Wash)
+*What happens if a child or curious user opens the dishwasher door while water is spraying?*
+```text
+AquaCore8> start
+AquaCore8> run 300
+    (Wash pump is actively spraying water!)
+
+AquaCore8> door open
+>>> Dishwasher door OPENED! Safety interlock triggered (actuators cut off).
+    (Notice: All actuators immediately shut down [ ], Door shows OPEN, and warning LED asserts [DOOR AJAR WARN])
+
+AquaCore8> door close
+>>> Dishwasher door CLOSED. Resuming normal operation.
+    (Notice: The CPU safely resumes washing right from where it left off!)
+```
+
+#### Scenario 4: Test Overheat Thermal Emergency Trip
+*What happens if the heating element malfunctions and temperature surges past safe limits (>75°C)?*
+```text
+AquaCore8> start
+AquaCore8> run 200
+AquaCore8> temp 78
+Water temperature injected: 78 C
+
+AquaCore8> step
+    (Notice: The emergency thermal check trips! The CPU immediately cuts all heater power, illuminates the red FAULT LED, outputs error code 0xAA to the progress port, and HALTS for safety!)
+```
+
+---
+
 ## 🎓 Viva & Exam Defense Quick Reference
 
 If your faculty asks you to explain the design during oral examination or project defense:
