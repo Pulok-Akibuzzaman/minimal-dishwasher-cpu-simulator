@@ -16,9 +16,9 @@
 <br><br>
 
 **Submitted By:**
-* **Nusrat Rahman Aurna** — ID: 2023-3-60-057
-* **Pulok Akibuzzaman** — ID: 2023-3-60-051
-* **Md. Jakaria Masud** — ID: 2023-3-60-386
+* **Nusrat Rahman Aurna** — ID: 2023-3-60-057 (Email: `2023-3-60-057@std.ewubd.edu`)
+* **Pulok Akibuzzaman** — ID: 2023-3-60-051 (Email: `2023-3-60-051@std.ewubd.edu`)
+* **Md. Jakaria Masud** — ID: 2023-3-60-386 (Email: `2023-3-60-386@std.ewubd.edu`)
 
 <br>
 

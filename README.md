@@ -17,11 +17,11 @@
 * **Repository:** [https://github.com/Pulok-Akibuzzaman/aquacore8-cpu-simulator](https://github.com/Pulok-Akibuzzaman/aquacore8-cpu-simulator)
 
 ### Team Members:
-| Name | Student ID | Email / Contribution |
-|:---|:---|:---|
-| **Nusrat Rahman Aurna** | `2023-3-60-057` | Architecture Design, Control Unit Logic & Verilog RTL |
-| **Pulok Akibuzzaman** | `2023-3-60-051` | Pure C Simulation Engine, Cyber-Physical Plant & Test Suite |
-| **Md. Jakaria Masud** | `2023-3-60-386` | Dishwasher Assembly Firmware, Physical Models & Documentation |
+| Name | Student ID | University Email | Role / Contribution |
+|:---|:---|:---|:---|
+| **Nusrat Rahman Aurna** | `2023-3-60-057` | `2023-3-60-057@std.ewubd.edu` | Architecture Design, Control Unit Logic & Verilog RTL |
+| **Pulok Akibuzzaman** | `2023-3-60-051` | `2023-3-60-051@std.ewubd.edu` | Pure C Simulation Engine, Cyber-Physical Plant & Test Suite |
+| **Md. Jakaria Masud** | `2023-3-60-386` | `2023-3-60-386@std.ewubd.edu` | Dishwasher Assembly Firmware, Physical Models & Documentation |
 
 ---
 
