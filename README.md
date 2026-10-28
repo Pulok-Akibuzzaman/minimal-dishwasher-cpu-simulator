@@ -1,6 +1,11 @@
 # AquaCore-8: Minimal CPU Architecture for Automated Dishwasher Control
 ### CSE360 – Computer Architecture Mini-Project | East West University (EWU)
 
+[![GitHub Repository](https://img.shields.io/badge/GitHub-aquacore8--cpu--simulator-blue?logo=github)](https://github.com/Pulok-Akibuzzaman/aquacore8-cpu-simulator)
+[![Language](https://img.shields.io/badge/Language-Pure%20C%20(C99)-00599C?logo=c)](src/)
+[![Tests](https://img.shields.io/badge/Verification-37%2F37%20Passed%20(100%25)-brightgreen)](src/tests.c)
+[![Architecture](https://img.shields.io/badge/Architecture-8--Bit%20Harvard%20RISC%20ASIP-orange)](docs/ISA_Specification.md)
+
 ---
 
 ## 👥 Project Team & Submission Details
@@ -9,6 +14,7 @@
 * **Department:** Department of Computer Science and Engineering
 * **Course:** CSE360 – Computer Architecture
 * **Project Title:** *Suggest and design a minimal CPU architecture, including ISA, datapath, and control unit, for automating dishwasher control functions with sensor inputs, and verify it with a simulator.*
+* **Repository:** [https://github.com/Pulok-Akibuzzaman/aquacore8-cpu-simulator](https://github.com/Pulok-Akibuzzaman/aquacore8-cpu-simulator)
 
 ### Team Members:
 | Name | Student ID | Email / Contribution |
@@ -24,7 +30,7 @@
 **AquaCore-8** is an application-specific 8-bit Harvard RISC-style microprocessor engineered from the ground up to automate complex household appliances. Configured here for an intelligent dishwasher, AquaCore-8 interfaces with real-time sensors (water temperature, fluid level, optical turbidity, door safety switch, puddle leak sensor) to dynamically modulate high-power actuators (inlet valves, wash pumps, 1800W heating elements, detergent/rinse-aid solenoids, drying blowers, and alarm buzzers).
 
 ### Core Highlights:
-* **Implemented Exclusively in Pure C (C99):** Lightweight, zero third-party dependencies, bare-metal hardware mapping (`uint8_t`, `uint16_t`), and nanosecond-fast execution.
+* **Implemented Exclusively in Pure C (C99):** Clean, minimal, zero third-party dependencies, bare-metal hardware mapping (`uint8_t`, `uint16_t`), and nanosecond-fast execution.
 * **Custom 16-Bit Instruction Set (ISA):** 16 primary opcodes supporting R-Type arithmetic/logic, I-Type immediates, memory Load/Store, Port I/O, Subroutine Call/Ret, and conditional branches.
 * **Single-Cycle Datapath:** Hardwired control unit ($CPI = 1.0$), 4 general-purpose registers (`R0`–`R3`), an 8-bit ALU with Status Flags ($Z, C, N, V$), and a 16-level hardware return stack.
 * **Cyber-Physical Plant Simulation:** First-principles fluid dynamics, thermodynamic heating ($1800\text{ W}$ element), and Beer-Lambert optical turbidity equations.
@@ -63,6 +69,21 @@ run.bat test     # Execute all 37 unit and integration tests
 run.bat batch    # Run end-to-end wash cycle batch trace (Pre-Wash -> Main -> Rinse -> Dry)
 run.bat cli      # Launch interactive real-time cycle visualizer
 ```
+
+---
+
+## 🎓 Viva & Exam Defense Quick Reference
+
+If your faculty asks you to explain the design during oral examination or project defense:
+
+| Question | Your 1-Sentence Answer |
+|:---|:---|
+| **1. "What architecture does your CPU use?"** | *"It is an 8-bit Harvard RISC processor with 16-bit fixed-length instructions, 4 general-purpose registers ($R_0..R_3$), and single-cycle execution ($CPI = 1.0$)."* |
+| **2. "Why Harvard instead of Von Neumann?"** | *"Harvard separates ROM and RAM so the CPU can fetch an instruction from ROM and access data in RAM in the same clock cycle without memory bus conflict."* |
+| **3. "How does the CPU talk to the dishwasher sensors?"** | *"Through Port-Mapped I/O: the `IN` instruction reads sensor ports (0x00 for door/mode, 0x01 for water level, 0x02 for temperature), and the `OUT` instruction writes to actuator ports (0x10 for pumps and heaters)."* |
+| **4. "What makes the dishwasher controller 'smart'?"** | *"An optical turbidity sensor reads water cloudiness after the main wash. If dirty sauce/curry remains in the water, our firmware dynamically executes an extra rinse cycle."* |
+| **5. "What happens if a child opens the door mid-cycle?"** | *"Our safety subroutine polls the door sensor bit. In less than 2 microseconds, it cuts all power to sprayers and heaters, lights a warning LED, and resumes seamlessly when the door is re-closed."* |
+| **6. "How did you verify the CPU works?"** | *"We built an automated test harness in C with 37 tests (20 unit tests for all ALU opcodes and flags, plus 17 end-to-end wash cycles and fault injections), achieving a 100% pass rate."* |
 
 ---
 
@@ -133,13 +154,11 @@ Mini-Project/
 ├── README.md                         ; Master project README & documentation index
 ├── Miniproject description.pdf       ; Course assignment requirements & guidelines
 │
-├── src/                              ; Pure C Simulation Engine & Test Harnesses
-│   ├── aquacore8.h                   ; CPU core, register, memory & I/O definitions
-│   ├── aquacore8.c                   ; Execution core, ALU logic & machine disassembler
-│   ├── dishwasher_plant.h            ; Cyber-physical fluid & thermodynamic header
-│   ├── dishwasher_plant.c            ; Water heating, inflow/drain & optical equations
-│   ├── tests.c                       ; 37 automated unit and full integration tests
-│   └── main.c                        ; Interactive CLI dashboard & batch runner
+├── src/                              ; Pure C Microprocessor & Simulator Engine
+│   ├── aquacore8.h                   ; CPU core, registers, I/O ports & physical plant header
+│   ├── aquacore8.c                   ; Execution loop, ALU, disassembler & physical plant
+│   ├── tests.c                       ; 37 automated unit & full integration test cases
+│   └── main.c                        ; Interactive CLI visualizer & batch trace runner
 │
 ├── programs/                         ; Firmware & Machine Code
 │   ├── dishwasher_controller.asm     ; Complete assembly firmware (216 instructions)
