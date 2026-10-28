@@ -176,10 +176,11 @@ Mini-Project/
 │   └── dishwasher_tb.v               ; Hardware testbench & timing stimulus
 │
 └── docs/                             ; Formal Academic Documentation
-    ├── Project_Report_CSE360.md      ; Full 9-section report in Markdown
+    ├── Project_Report_CSE360.docx    ; Official Word document formatted for soft binding
     ├── Project_Report_CSE360.html    ; Printable A4 formatted report (Ctrl+P -> PDF)
-    ├── Explain_Like_Im_5.md          ; "Explain Like I'm 5" intuitive concept breakdown
+    ├── Project_Report_CSE360.md      ; Full 9-section report in Markdown
     ├── Explain_Like_Im_5.html        ; Printable web version of the ELI5 guide
+    ├── Explain_Like_Im_5.md          ; "Explain Like I'm 5" intuitive concept breakdown
     ├── ISA_Specification.md          ; Complete opcode and instruction set reference
     └── Architecture_Diagrams.md      ; Mermaid schematics & datapath diagrams
 ```
@@ -188,28 +189,26 @@ Mini-Project/
 
 ## 📖 Key Documentation Links
 
-1. **[Academic Project Report (HTML)](docs/Project_Report_CSE360.html)**
-   * Formatted strictly to the 9-section CSE360 syllabus outline.
-   * Includes the official EWU front cover, student names/IDs, high-resolution datapath schematics, 38 LaTeX/MathJax formulas, result tables, and bibliography.
+1. **[Academic Project Report (Word Document)](docs/Project_Report_CSE360.docx)**
+   * Clean, editable Microsoft Word `.docx` file following the exact 9-section manual.
+   * Features seminar/dissertation cover page, student names, IDs, emails, tables, equations, and references.
+2. **[Academic Project Report (HTML Printable)](docs/Project_Report_CSE360.html) | [(Markdown)](docs/Project_Report_CSE360.md)**
+   * Formatted strictly to the 9-section CSE360 syllabus outline with MathJax LaTeX formulas.
    * Ready for direct A4 soft-binding print (`Ctrl + P` in any browser).
-2. **[Explain Like I'm 5 (ELI5) Guide (HTML)](docs/Explain_Like_Im_5.html) | [(Markdown)](docs/Explain_Like_Im_5.md)**
+3. **[Explain Like I'm 5 (ELI5) Guide (HTML)](docs/Explain_Like_Im_5.html) | [(Markdown)](docs/Explain_Like_Im_5.md)**
    * A friendly, engaging guide explaining every component using simple everyday metaphors (the cookbook, the whiteboard, the little pockets, the turbidity goggles, and kid safety).
-3. **[Instruction Set Architecture (ISA) Specification (Markdown)](docs/ISA_Specification.md)**
+4. **[Instruction Set Architecture (ISA) Specification (Markdown)](docs/ISA_Specification.md)**
    * Complete bitfield encodings, opcodes, register conventions, and cycle timings.
-4. **[Micro-Architecture & Datapath Diagrams (Markdown)](docs/Architecture_Diagrams.md)**
+5. **[Micro-Architecture & Datapath Diagrams (Markdown)](docs/Architecture_Diagrams.md)**
    * Hardware block diagrams and finite-state machine (FSM) representations.
 
 ---
 
 ## 🖨️ Printing the Report for Soft Binding Submission
 
-To produce the official physical report for submission:
-1. Open [`docs/Project_Report_CSE360.html`](docs/Project_Report_CSE360.html) in **Google Chrome** or **Microsoft Edge**.
-2. Press **`Ctrl + P`** (Print).
-3. Set **Destination** to `Save as PDF` (or select your local printer).
-4. Set **Paper size** to `A4`.
-5. Under **More settings**, ensure **Background graphics** is **checked**.
-6. Click **Save** / **Print** and submit for soft binding!
+You can print the final report using either Microsoft Word or your web browser:
+* **Option A (Microsoft Word - Recommended):** Open [`docs/Project_Report_CSE360.docx`](docs/Project_Report_CSE360.docx), review the formatting, and print directly to A4 paper.
+* **Option B (Web Browser):** Open [`docs/Project_Report_CSE360.html`](docs/Project_Report_CSE360.html) in Chrome/Edge, press **`Ctrl + P`**, set paper to A4, enable background graphics, and print/save to PDF.
 
 ---
 
