@@ -19,7 +19,7 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 echo [1/2] Compiling C source files using %GCC_PATH%...
-"%GCC_PATH%" -O2 -Wall -I src src\aquacore8.c src\dishwasher_plant.c src\tests.c src\main.c -o aquacore8_sim.exe
+"%GCC_PATH%" -O2 -Wall -I src src\aquacore8.c src\tests.c src\main.c -o aquacore8_sim.exe
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] C compilation failed!
     exit /b 1

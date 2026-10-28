@@ -120,11 +120,37 @@ typedef struct {
     uint64_t total_cycles;        // Execution Cycle Counter
 } AquaCore8;
 
-// Function Prototypes
+// --- Dishwasher Cyber-Physical Plant Definition ---
+#define WATER_LEVEL_EMPTY 0x00
+#define WATER_LEVEL_LOW   0x10
+#define WATER_LEVEL_FULL  0x50
+#define WATER_LEVEL_HEAVY 0x60
+#define WATER_LEVEL_MAX   0x80
+
+typedef struct {
+    bool   door_closed;
+    bool   start_button_pressed;
+    int    selected_mode;       // 0=Normal (55C), 1=Eco (45C), 2=Heavy (65C)
+    int    water_level;         // 0 to 128
+    double water_temp;          // Water temperature in Celsius
+    int    turbidity;           // 0 (clean) to 100 (filthy)
+    int    dish_soil_remaining; // 0 to 100%
+    bool   detergent_released;
+    bool   rinse_aid_released;
+    bool   leak_detected;
+    bool   dry_burn_alarm;
+} DishwasherPlant;
+
+// Function Prototypes - CPU Core
 void cpu_init(AquaCore8 *cpu);
 void cpu_reset(AquaCore8 *cpu);
 bool cpu_step(AquaCore8 *cpu);
 bool cpu_load_hex_file(AquaCore8 *cpu, const char *filepath);
 void cpu_disassemble(uint16_t instr, char *buf, size_t bufsize);
+
+// Function Prototypes - Dishwasher Plant Model
+void plant_init(DishwasherPlant *p, AquaCore8 *cpu);
+void plant_step(DishwasherPlant *p, AquaCore8 *cpu);
+void plant_sync_to_io(DishwasherPlant *p, AquaCore8 *cpu);
 
 #endif // AQUACORE8_H

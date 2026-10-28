@@ -11,7 +11,6 @@
  */
 
 #include "aquacore8.h"
-#include "dishwasher_plant.h"
 #include <stdio.h>
 #include <stdbool.h>
 
