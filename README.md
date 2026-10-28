@@ -232,6 +232,8 @@ Mini-Project/
 │   └── dishwasher_tb.v               ; Hardware testbench & timing stimulus
 │
 └── docs/                             ; Formal Academic Documentation
+    ├── Full_Project_Summary.docx     ; Complete plain-English executive summary (Word)
+    ├── Full_Project_Summary.md       ; Complete plain-English executive summary (Markdown)
     ├── Project_Report_CSE360.docx    ; Official Word document formatted for soft binding
     ├── Project_Report_CSE360.html    ; Printable A4 formatted report (Ctrl+P -> PDF)
     ├── Project_Report_CSE360.md      ; Full 9-section report in Markdown
@@ -245,17 +247,19 @@ Mini-Project/
 
 ## 📖 Key Documentation Links
 
-1. **[Academic Project Report (Word Document)](docs/Project_Report_CSE360.docx)**
+1. **[Full Project Executive Summary (Word)](docs/Full_Project_Summary.docx) | [(Markdown)](docs/Full_Project_Summary.md)**
+   * Complete, plain-English summary answering the purpose, simulator mechanics, real-time behavior, and proof that verification is 100% dynamic.
+2. **[Academic Project Report (Word Document)](docs/Project_Report_CSE360.docx)**
    * Clean, editable Microsoft Word `.docx` file following the exact 9-section manual.
    * Features seminar/dissertation cover page, student names, IDs, emails, tables, equations, and references.
-2. **[Academic Project Report (HTML Printable)](docs/Project_Report_CSE360.html) | [(Markdown)](docs/Project_Report_CSE360.md)**
+3. **[Academic Project Report (HTML Printable)](docs/Project_Report_CSE360.html) | [(Markdown)](docs/Project_Report_CSE360.md)**
    * Formatted strictly to the 9-section CSE360 syllabus outline with MathJax LaTeX formulas.
    * Ready for direct A4 soft-binding print (`Ctrl + P` in any browser).
-3. **[Explain Like I'm 5 (ELI5) Guide (HTML)](docs/Explain_Like_Im_5.html) | [(Markdown)](docs/Explain_Like_Im_5.md)**
+4. **[Explain Like I'm 5 (ELI5) Guide (HTML)](docs/Explain_Like_Im_5.html) | [(Markdown)](docs/Explain_Like_Im_5.md)**
    * A friendly, engaging guide explaining every component using simple everyday metaphors (the cookbook, the whiteboard, the little pockets, the turbidity goggles, and kid safety).
-4. **[Instruction Set Architecture (ISA) Specification (Markdown)](docs/ISA_Specification.md)**
+5. **[Instruction Set Architecture (ISA) Specification (Markdown)](docs/ISA_Specification.md)**
    * Complete bitfield encodings, opcodes, register conventions, and cycle timings.
-5. **[Micro-Architecture & Datapath Diagrams (Markdown)](docs/Architecture_Diagrams.md)**
+6. **[Micro-Architecture & Datapath Diagrams (Markdown)](docs/Architecture_Diagrams.md)**
    * Hardware block diagrams and finite-state machine (FSM) representations.
 
 ---
