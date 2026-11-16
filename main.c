@@ -1,3 +1,4 @@
+// CSE360 Mini-Project: Minimal CPU Architecture (ISA, Datapath, Control Unit) for Dishwasher Control
 #include <stdio.h>
 
 // --- 1. INSTRUCTION SET ARCHITECTURE (ISA) & HARDWARE PORTS ---
@@ -10,12 +11,14 @@ typedef struct {
     int operand;
 } Instruction;
 
-// --- 2. CPU REGISTERS & SYSTEM STATE ---
-int program_counter           = 0;
-int data_register             = 0;
-int zero_flag                 = 0;
-int is_processor_halted       = 0;
+// --- 2. CPU REGISTERS (DATAPATH) & SYSTEM STATE ---
+int program_counter           = 0; // PC: points to next instruction
+Instruction instruction_reg;       // IR: holds currently fetched instruction
+int data_register             = 0; // R0: working accumulator register
+int zero_flag                 = 0; // ZF: set to 1 if comparison matches
+int is_processor_halted       = 0; // Halt flag: stops the CPU clock
 
+// Sensor Inputs & Actuator Outputs
 int is_door_closed            = 1;
 int current_water_level       = 0;
 int current_water_temperature = 20;
@@ -35,18 +38,21 @@ Instruction instruction_memory[] = {
     { SET_DEVICE, FINISH_BUZZER }, { HALT_CPU, 0 }                                        // 19-20: Sound buzzer & stop
 };
 
-// --- 4. CONTROL UNIT (Fetch -> Decode -> Execute) ---
+// --- 4. CONTROL UNIT (Fetch -> Decode -> Execute Pipeline) ---
 void execute_cpu_cycle(void) {
-    Instruction current_instruction = instruction_memory[program_counter++]; // 1. FETCH & increment PC
-    switch (current_instruction.operation_code) {                            // 2. DECODE & 3. EXECUTE
+    // 1. FETCH: Read instruction from ROM at PC into IR, increment PC
+    instruction_reg = instruction_memory[program_counter++];
+    
+    // 2. DECODE & 3. EXECUTE: Control Unit decodes opcode and triggers datapath
+    switch (instruction_reg.operation_code) {
         case READ_SENSOR:
-            if (current_instruction.operand == SENSOR_DOOR)        data_register = is_door_closed;
-            if (current_instruction.operand == SENSOR_WATER_LEVEL) data_register = current_water_level;
-            if (current_instruction.operand == SENSOR_WATER_TEMP)  data_register = current_water_temperature;
+            if (instruction_reg.operand == SENSOR_DOOR)        data_register = is_door_closed;
+            if (instruction_reg.operand == SENSOR_WATER_LEVEL) data_register = current_water_level;
+            if (instruction_reg.operand == SENSOR_WATER_TEMP)  data_register = current_water_temperature;
             break;
-        case SET_DEVICE:          active_hardware_device = current_instruction.operand; break;
-        case COMPARE_VALUE:       zero_flag = (data_register == current_instruction.operand); break;
-        case JUMP_IF_NOT_EQUAL:   if (!zero_flag) program_counter = current_instruction.operand; break;
+        case SET_DEVICE:          active_hardware_device = instruction_reg.operand; break;
+        case COMPARE_VALUE:       zero_flag = (data_register == instruction_reg.operand); break;
+        case JUMP_IF_NOT_EQUAL:   if (!zero_flag) program_counter = instruction_reg.operand; break;
         case HALT_CPU:            is_processor_halted = 1; break;
     }
 }
