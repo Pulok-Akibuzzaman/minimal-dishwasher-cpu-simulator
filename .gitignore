@@ -11,6 +11,8 @@
 # Temporary and log files
 *.log
 tmp/
+~$*
+*.tmp
 
 # OS metadata
 Thumbs.db

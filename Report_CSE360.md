@@ -16,7 +16,6 @@ Format:             Standard A4 Mini-Project Report with Built-in Documentation
 Submitted By:
   1. Nusrat Rahman Aurna   | Student ID: 2023-3-60-057 | 2023-3-60-057@std.ewubd.edu
   2. Pulok Akibuzzaman     | Student ID: 2023-3-60-051 | 2023-3-60-051@std.ewubd.edu
-  3. Md. Jakaria Masud     | Student ID: 2023-3-60-386 | 2023-3-60-386@std.ewubd.edu
 
 Submitted To:
   Course Instructor, CSE360
