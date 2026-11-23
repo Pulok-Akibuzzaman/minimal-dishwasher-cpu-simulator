@@ -21,6 +21,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 // --- 1. INSTRUCTION SET ARCHITECTURE (ISA) & HARDWARE PORTS ---
 // 5-Instruction Minimal ISA
@@ -155,28 +157,97 @@ const char *device_names[] = {
     "Buzzer (Wash Completed)"
 };
 
-// --- 6. MAIN SIMULATOR DRIVER ---
-int main(void) {
+// --- 6. MAIN SIMULATOR DRIVER WITH DYNAMIC INPUT MODES ---
+int main(int argc, char *argv[]) {
     printf("========================================================================================\n");
     printf("        Minimal CPU Architecture Simulator for Automated Dishwasher Control            \n");
     printf(" Course: CSE360 Computer Architecture | East West University                           \n");
     printf(" Title : Suggest & design minimal CPU (ISA, datapath, control unit) for dishwasher     \n");
     printf("========================================================================================\n");
-    printf("Clock Cycle | PC | Water Level | Temperature | Active Hardware Device\n");
+
+    int mode = 1;
+    int step_by_step = 0;
+
+    // Check if mode passed via CLI argument (e.g. ./aquacore8_sim.exe 1)
+    if (argc > 1) {
+        mode = atoi(argv[1]);
+    } else {
+        printf("Select Simulation Mode:\n");
+        printf("  [1] Standard Automated Run (Verified 45 Clock Cycles - Academic Baseline)\n");
+        printf("  [2] Custom Environment & Sensor Input (Custom Temp, Water Level, Step Clock)\n");
+        printf("  [3] Safety Interlock Verification (Live Door Open / Hold Test)\n");
+        printf("Enter choice (1-3) [Default = 1]: ");
+
+        char line[64];
+        if (fgets(line, sizeof(line), stdin)) {
+            int parsed = atoi(line);
+            if (parsed >= 1 && parsed <= 3) {
+                mode = parsed;
+            }
+        }
+    }
+
+    if (mode == 2) {
+        char input_buf[64];
+        printf("\n--- Configure Dynamic Sensor Inputs ---\n");
+
+        printf("Enter Initial Water Temperature in C (15 - 40) [Default: 20]: ");
+        if (fgets(input_buf, sizeof(input_buf), stdin) && input_buf[0] != '\n') {
+            int t = atoi(input_buf);
+            if (t >= 15 && t <= 40) current_water_temperature = t;
+        }
+
+        printf("Enter Initial Water Level in Liters (0 - 40) [Default: 0]: ");
+        if (fgets(input_buf, sizeof(input_buf), stdin) && input_buf[0] != '\n') {
+            int l = atoi(input_buf);
+            if (l >= 0 && l <= 40) current_water_level = l;
+        }
+
+        printf("Enable Step-by-Step Clock Execution? (1 = Yes [Enter to pulse], 0 = Continuous) [Default: 0]: ");
+        if (fgets(input_buf, sizeof(input_buf), stdin) && input_buf[0] != '\n') {
+            step_by_step = (atoi(input_buf) == 1);
+        }
+        printf("Configuration Applied: Temp=%dC, Water Level=%dL, Stepping=%s\n",
+               current_water_temperature, current_water_level, step_by_step ? "Enabled" : "Disabled");
+    } else if (mode == 3) {
+        printf("\n--- Safety Interlock Test Mode Initialized ---\n");
+        printf("Starting with Safety Door OPEN (is_door_closed = 0)...\n");
+        is_door_closed = 0;
+    }
+
+    printf("\nClock Cycle | PC | Water Level | Temperature | Active Hardware Device\n");
     printf("------------+----+-------------+-------------+------------------------------------------\n");
 
     int clock_cycle = 0;
     while (!is_processor_halted && clock_cycle < 100) {
         int previous_device = active_hardware_device;
 
+        // In Mode 3, demonstrate safety hold for first 6 cycles, then simulate closing door
+        if (mode == 3 && clock_cycle == 6 && !is_door_closed) {
+            printf("    --- [SAFETY EVENT]: Door opened! CPU held at PC: 0. Actuators remain OFF. ---\n");
+            printf("    >>> Press [ENTER] to close the safety door and resume washing cycle... ");
+            fflush(stdout);
+            getchar();
+            is_door_closed = 1;
+            printf("    --- [SAFETY EVENT]: Door safely latched. Resuming cycle! ---\n");
+        }
+
         execute_cpu_cycle();
         simulate_dishwasher_hardware();
 
-        // Print formatted telemetry on hardware state transitions or CPU halt
-        if (active_hardware_device != previous_device || is_processor_halted) {
+        // Print formatted telemetry on hardware state transitions, halt, or during stepping
+        if (active_hardware_device != previous_device || is_processor_halted || step_by_step) {
             printf("    %3d     | %2d |     %2dL     |     %2dC     | %s\n",
                    clock_cycle, program_counter, current_water_level, current_water_temperature,
                    active_hardware_device >= 0 ? device_names[active_hardware_device] : "Standby (Idle)");
+
+            if (step_by_step && !is_processor_halted) {
+                printf("    [Cycle %d: PC=%d, IR=(Op:%d, Arg:%d), R0=%d, ZF=%d] Press Enter...",
+                       clock_cycle, program_counter, instruction_reg.operation_code,
+                       instruction_reg.operand, data_register, zero_flag);
+                fflush(stdout);
+                getchar();
+            }
         }
         clock_cycle++;
     }

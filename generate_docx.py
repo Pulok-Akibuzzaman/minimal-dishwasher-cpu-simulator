@@ -564,9 +564,11 @@ def create_report():
         "and never energizes the water valve. Furthermore, all physical parameters (water volume 0-50L, temperature 20-55°C) are strictly bounded."
     )
 
-    add_h2("5.2 Test Scenarios & Fault Tolerance Verification")
-    doc.add_paragraph("• Scenario A (Normal Automated Run): Door is closed; CPU completes all 5 operation stages and halts cleanly in 45 clock cycles.")
-    doc.add_paragraph("• Scenario B (Door Safety Interlock Hold): Door is unlatched; CPU holds in safe polling loop with zero actuator power consumption.")
+    add_h2("5.2 Test Scenarios & Dynamic Execution Modes")
+    doc.add_paragraph("The simulator provides three execution modes to thoroughly verify all architectural states and safety constraints:")
+    doc.add_paragraph("• Mode 1 (Standard Automated Run): Executes the verified academic baseline with default factory conditions (is_door_closed = 1, Temp = 20°C, Water Level = 0L), completing in exactly 45 clock cycles.")
+    doc.add_paragraph("• Mode 2 (Custom Environment & Sensor Input): Allows dynamic configuration of starting water temperature (15°C - 40°C), initial water volume (0 - 40L), and enables step-by-step clock execution where pressing Enter advances one clock cycle while displaying current PC, IR, R0, and ZF register values.")
+    doc.add_paragraph("• Mode 3 (Live Safety Interlock Verification): Starts with the safety door open (is_door_closed = 0). The CPU remains trapped in a safe polling loop (PC: 0 -> 2) with zero actuator power until the user presses Enter to close the door, at which point the CPU transitions to State 1 and completes the cycle without error.")
 
     add_h2("5.3 Complete Step-by-Step Clock Cycle Trace Table")
     trace_data = [

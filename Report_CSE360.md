@@ -559,28 +559,97 @@ const char *device_names[] = {
     "Buzzer (Wash Completed)"
 };
 
-// --- 6. MAIN SIMULATOR DRIVER ---
-int main(void) {
+// --- 6. MAIN SIMULATOR DRIVER WITH DYNAMIC INPUT MODES ---
+int main(int argc, char *argv[]) {
     printf("========================================================================================\n");
     printf("        Minimal CPU Architecture Simulator for Automated Dishwasher Control            \n");
     printf(" Course: CSE360 Computer Architecture | East West University                           \n");
     printf(" Title : Suggest & design minimal CPU (ISA, datapath, control unit) for dishwasher     \n");
     printf("========================================================================================\n");
-    printf("Clock Cycle | PC | Water Level | Temperature | Active Hardware Device\n");
+
+    int mode = 1;
+    int step_by_step = 0;
+
+    // Check if mode passed via CLI argument (e.g. ./aquacore8_sim.exe 1)
+    if (argc > 1) {
+        mode = atoi(argv[1]);
+    } else {
+        printf("Select Simulation Mode:\n");
+        printf("  [1] Standard Automated Run (Verified 45 Clock Cycles - Academic Baseline)\n");
+        printf("  [2] Custom Environment & Sensor Input (Custom Temp, Water Level, Step Clock)\n");
+        printf("  [3] Safety Interlock Verification (Live Door Open / Hold Test)\n");
+        printf("Enter choice (1-3) [Default = 1]: ");
+
+        char line[64];
+        if (fgets(line, sizeof(line), stdin)) {
+            int parsed = atoi(line);
+            if (parsed >= 1 && parsed <= 3) {
+                mode = parsed;
+            }
+        }
+    }
+
+    if (mode == 2) {
+        char input_buf[64];
+        printf("\n--- Configure Dynamic Sensor Inputs ---\n");
+
+        printf("Enter Initial Water Temperature in C (15 - 40) [Default: 20]: ");
+        if (fgets(input_buf, sizeof(input_buf), stdin) && input_buf[0] != '\n') {
+            int t = atoi(input_buf);
+            if (t >= 15 && t <= 40) current_water_temperature = t;
+        }
+
+        printf("Enter Initial Water Level in Liters (0 - 40) [Default: 0]: ");
+        if (fgets(input_buf, sizeof(input_buf), stdin) && input_buf[0] != '\n') {
+            int l = atoi(input_buf);
+            if (l >= 0 && l <= 40) current_water_level = l;
+        }
+
+        printf("Enable Step-by-Step Clock Execution? (1 = Yes [Enter to pulse], 0 = Continuous) [Default: 0]: ");
+        if (fgets(input_buf, sizeof(input_buf), stdin) && input_buf[0] != '\n') {
+            step_by_step = (atoi(input_buf) == 1);
+        }
+        printf("Configuration Applied: Temp=%dC, Water Level=%dL, Stepping=%s\n",
+               current_water_temperature, current_water_level, step_by_step ? "Enabled" : "Disabled");
+    } else if (mode == 3) {
+        printf("\n--- Safety Interlock Test Mode Initialized ---\n");
+        printf("Starting with Safety Door OPEN (is_door_closed = 0)...\n");
+        is_door_closed = 0;
+    }
+
+    printf("\nClock Cycle | PC | Water Level | Temperature | Active Hardware Device\n");
     printf("------------+----+-------------+-------------+------------------------------------------\n");
 
     int clock_cycle = 0;
     while (!is_processor_halted && clock_cycle < 100) {
         int previous_device = active_hardware_device;
 
+        // In Mode 3, demonstrate safety hold for first 6 cycles, then simulate closing door
+        if (mode == 3 && clock_cycle == 6 && !is_door_closed) {
+            printf("    --- [SAFETY EVENT]: Door opened! CPU held at PC: 0. Actuators remain OFF. ---\n");
+            printf("    >>> Press [ENTER] to close the safety door and resume washing cycle... ");
+            fflush(stdout);
+            getchar();
+            is_door_closed = 1;
+            printf("    --- [SAFETY EVENT]: Door safely latched. Resuming cycle! ---\n");
+        }
+
         execute_cpu_cycle();
         simulate_dishwasher_hardware();
 
-        // Print formatted telemetry on hardware state transitions or CPU halt
-        if (active_hardware_device != previous_device || is_processor_halted) {
+        // Print formatted telemetry on hardware state transitions, halt, or during stepping
+        if (active_hardware_device != previous_device || is_processor_halted || step_by_step) {
             printf("    %3d     | %2d |     %2dL     |     %2dC     | %s\n",
                    clock_cycle, program_counter, current_water_level, current_water_temperature,
                    active_hardware_device >= 0 ? device_names[active_hardware_device] : "Standby (Idle)");
+
+            if (step_by_step && !is_processor_halted) {
+                printf("    [Cycle %d: PC=%d, IR=(Op:%d, Arg:%d), R0=%d, ZF=%d] Press Enter...",
+                       clock_cycle, program_counter, instruction_reg.operation_code,
+                       instruction_reg.operand, data_register, zero_flag);
+                fflush(stdout);
+                getchar();
+            }
         }
         clock_cycle++;
     }
@@ -607,9 +676,11 @@ To ensure that the architecture and simulator code are fool-proof and fully debu
 3. **Zero Flag Condition Assertion:** Verified that $ZF$ is asserted ($1$) if and only if $R_0 == \text{Operand}$, preventing spurious branch skips.
 4. **Finite Clock Budget:** A watchdog boundary of $100$ maximum cycles ensures guaranteed program termination even in anomalous hardware scenarios.
 
-### 5.2 Test Scenarios & Fault Tolerance Verification
-* **Scenario A (Normal Complete Wash Cycle):** Door is confirmed closed (`is_door_closed = 1`). The CPU executes all 5 phases sequentially and successfully halts at clock cycle 45.
-* **Scenario B (Safety Door Open During Startup):** When `is_door_closed = 0`, the processor executes `READ_SENSOR 0`, `COMPARE_VALUE 1` ($ZF = 0$), and `JUMP_IF_NOT_EQUAL 0` ($PC \leftarrow 0$), remaining trapped in a zero-actuator standby state until the user securely latches the door.
+### 5.2 Test Scenarios & Dynamic Execution Modes
+The simulator provides three distinct execution modes to thoroughly verify all architectural states and safety constraints:
+* **Mode 1 (Standard Automated Run - Baseline):** Executes the verified academic baseline with default factory conditions (`is_door_closed = 1`, `Temp = 20°C`, `Water Level = 0L`), completing in exactly 45 clock cycles.
+* **Mode 2 (Custom Environment & Sensor Input):** Allows dynamic configuration of starting water temperature ($15^\circ\text{C} - 40^\circ\text{C}$), initial water volume ($0 - 40\text{L}$), and enables step-by-step clock execution where pressing Enter advances one clock cycle while displaying current $PC$, $IR$, $R_0$, and $ZF$ register values.
+* **Mode 3 (Live Safety Interlock Verification):** Starts with the safety door open (`is_door_closed = 0`). The CPU remains trapped in a safe polling loop ($PC: 0 \to 2$) with zero actuator power until the user presses Enter to close the door, at which point the CPU transitions to State 1 and completes the cycle without error.
 
 ### 5.3 Complete Step-by-Step Clock Cycle Trace Table
 

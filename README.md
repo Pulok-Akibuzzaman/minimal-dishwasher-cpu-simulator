@@ -60,19 +60,24 @@ gcc -Wall -Wextra main.c -o aquacore8_sim.exe
 ```
 
 ### Execution
-On Windows:
+Run the executable directly:
 ```cmd
 .\aquacore8_sim.exe
+```
+When launched, the simulator displays an interactive menu:
+* **Option 1: Standard Automated Run** (Verified 45 Clock Cycles - Academic Baseline)
+* **Option 2: Custom Environment & Sensor Input** (Configure initial water temperature, water volume, and optional step-by-step clock stepping)
+* **Option 3: Safety Interlock Verification** (Simulates starting with door unlatched, demonstrating safe polling hold until user closes the door)
+
+You can also pass the mode directly as a command-line argument for automated non-interactive runs:
+```cmd
+.\aquacore8_sim.exe 1   # Mode 1: Automated 45-cycle baseline
+.\aquacore8_sim.exe 3   # Mode 3: Safety interlock demonstration
 ```
 or via the provided batch scripts:
 ```cmd
 build.bat
 run.bat
-```
-
-On Linux:
-```bash
-./aquacore8_sim.exe
 ```
 
 ---
