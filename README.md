@@ -1,42 +1,107 @@
-# AquaCore-8: Simple Dishwasher CPU Architecture Simulator
+# Suggest and design a minimal CPU architecture, including ISA, datapath, and control unit, for automating dishwasher control functions with sensor inputs, and verify it with a simulator
+
 ### CSE360 – Computer Architecture Mini-Project | East West University (EWU)
+**Semester:** Fall 2026 | **Section:** 01  
+**Instructor:** Dr. Nawab Yousuf Ali, Professor, Department of Computer Science & Engineering  
+
+**Submitted By:**
+* **Nusrat Rahman Aurna** | Student ID: `2023-3-60-057` | `2023-3-60-057@std.ewubd.edu`
+* **Pulok Akibuzzaman**   | Student ID: `2023-3-60-051` | `2023-3-60-051@std.ewubd.edu`
 
 ---
 
-## 📋 Overview
-A minimal, readable CPU simulator in pure C (**89 lines**) designed for **CSE360 Computer Architecture**. It models an 8-bit application-specific CPU controlling an automated dishwasher using sensors and actuators.
+## 📋 Project Overview
+This project presents the formal design, Instruction Set Architecture (ISA) specification, datapath organization, synchronous control unit logic, and cycle-accurate software simulation of **AquaCore-8**—a minimal 8-bit Application-Specific Instruction-set Processor (ASIP) engineered explicitly to automate domestic dishwasher operations.
 
-All variables and functions use clear, self-explanatory English words for easy presentation and viva explanation.
-
----
-
-## ⚙️ Architecture Reference (Variables & Functions)
-
-### 1. CPU Registers & Datapath
-* `program_counter`: Address of the current instruction to fetch.
-* `data_register`: Working register to store sensor values and intermediate data.
-* `zero_flag`: Condition flag set to `1` when a comparison matches.
-* `is_processor_halted`: Set to `1` when the `HALT_CPU` instruction executes.
-
-### 2. Dishwasher Physical Sensors & Hardware
-* `is_door_closed`: Safety sensor (`1` = closed, `0` = open).
-* `current_water_level`: Tub water volume in Liters.
-* `current_water_temperature`: Water temperature in °C.
-* `active_hardware_device`: Currently running appliance component.
-
-### 3. Core Functions
-* `execute_cpu_cycle()`: Implements the **Fetch $\to$ Decode $\to$ Execute** control unit cycle.
-* `simulate_dishwasher_hardware()`: Cyber-physical simulation updating water levels and temperatures.
+AquaCore-8 achieves complete closed-loop appliance process automation (door safety interlocking, water filling, high-temperature wash agitation, hydraulic draining, and forced heated drying) using a lean 5-instruction architecture executed on a verified Fetch-Decode-Execute pipeline implemented in pure ANSI C in under 110 lines of self-documenting code.
 
 ---
 
-## 🚀 How to Run
+## ⚙️ Architectural Specification
+
+### 1. CPU Registers (Datapath)
+* `program_counter` ($PC$): Holds the address of the next instruction word in ROM.
+* `instruction_reg` ($IR$): Holds the currently fetched 8-bit instruction word `[Opcode | Operand]`.
+* `data_register` ($R_0$ / Accumulator): Accumulator register holding sensor readings and comparison data.
+* `zero_flag` ($ZF$): Single-bit condition flag set to `1` when a comparison between $R_0$ and the immediate operand matches.
+* `is_processor_halted`: Set to `1` when the `HALT_CPU` instruction executes, halting the CPU clock generator.
+
+### 2. Physical Sensors & Hardware Transducers (Input Ports)
+* `SENSOR_DOOR` (Port 0): Safety door interlock switch (`1` = Closed, `0` = Open).
+* `SENSOR_WATER_LEVEL` (Port 1): Hydrostatic pressure level sensor ($0\text{ to }50\text{ Liters}$).
+* `SENSOR_WATER_TEMP` (Port 2): NTC thermistor temperature probe ($20^\circ\text{C to }55^\circ\text{C}$).
+
+### 3. Actuator Output Subsystems (Output Ports)
+* `WATER_INLET_VALVE` (Port 0): Solenoid intake valve ($+10\text{ L/cycle}$ fill rate).
+* `HEATER_AND_PUMP` (Port 1): 2.2kW heating element and spray wash circulation pump ($+5^\circ\text{C/cycle}$ heat rate).
+* `DRAIN_PUMP` (Port 2): Centrifugal drain evacuation pump ($-10\text{ L/cycle}$ drainage rate).
+* `DRYING_FAN` (Port 3): Forced convection hot-air drying fan ($-5^\circ\text{C/cycle}$ cooling/drying rate).
+* `FINISH_BUZZER` (Port 4): Piezoelectric completion audio beeper.
+
+### 4. Minimal 5-Instruction ISA
+| Opcode Mnemonic | Opcode ID | Operand Field | RTL Micro-Operation |
+| :--- | :---: | :--- | :--- |
+| `READ_SENSOR` | `0` | Sensor Port ID | $R_0 \leftarrow \text{Sensors}[\text{operand}]$ |
+| `SET_DEVICE` | `1` | Device Port ID | $\text{active\_device} \leftarrow \text{operand}$ |
+| `COMPARE_VALUE` | `2` | Immediate Constant | $ZF \leftarrow (R_0 == \text{operand})$ |
+| `JUMP_IF_NOT_EQUAL` | `3` | ROM Target Address | $\text{if } (!ZF) \; PC \leftarrow \text{operand}$ |
+| `HALT_CPU` | `4` | `0` (Unused) | $\text{is\_halted} \leftarrow 1$ |
+
+---
+
+## 🚀 How to Build and Run
+
+### Prerequisites
+* GCC (MinGW on Windows or GCC on Linux)
+
+### Compilation
+```bash
+gcc -Wall -Wextra main.c -o aquacore8_sim.exe
+```
+
+### Execution
+On Windows:
+```cmd
+.\aquacore8_sim.exe
+```
+or via the provided batch scripts:
 ```cmd
 build.bat
 run.bat
 ```
-or directly with GCC:
+
+On Linux:
 ```bash
-gcc main.c -o aquacore8_sim.exe
 ./aquacore8_sim.exe
 ```
+
+---
+
+## 📊 Verification Trace Output
+
+```text
+========================================================================================
+        Minimal CPU Architecture Simulator for Automated Dishwasher Control            
+ Course: CSE360 Computer Architecture | East West University                           
+ Title : Suggest & design minimal CPU (ISA, datapath, control unit) for dishwasher     
+========================================================================================
+Clock Cycle | PC | Water Level | Temperature | Active Hardware Device
+------------+----+-------------+-------------+------------------------------------------
+      3     |  4 |     10L     |     20C     | Water Inlet Valve (Filling)
+     13     |  8 |     50L     |     25C     | Heater & Spray Pump (Washing)
+     23     | 12 |     40L     |     55C     | Drain Pump (Emptying)
+     33     | 16 |      0L     |     50C     | Drying Fan (Drying)
+     43     | 20 |      0L     |     30C     | Buzzer (Wash Completed)
+     44     | 21 |      0L     |     30C     | Buzzer (Wash Completed)
+========================================================================================
+SUCCESS: Dishwasher automation verified! Completed cycle in 45 CPU clock cycles.
+========================================================================================
+```
+
+---
+
+## 📑 Project Deliverables
+* [main.c](main.c): Pure ANSI C cycle-accurate CPU simulator in 110 lines.
+* [Report_CSE360.md](Report_CSE360.md): Comprehensive academic project report in Markdown.
+* [Report_CSE360.docx](Report_CSE360.docx): Formal academic report in standard formatted A4 Word document.
+* [aquacore8_sim.exe](aquacore8_sim.exe): Precompiled executable binary.
