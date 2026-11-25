@@ -28,16 +28,17 @@ Each instruction is packed into a compact **9-bit word** (3-bit opcode + 6-bit o
 | `100` (`4`) | `HALT` | `0` (Unused) | `halted` $\leftarrow$ `1` | Stops processor execution clock |
 
 ### 2. Datapath & Registers
-* **`pc` (Program Counter):** 8-bit register holding the address of the next instruction to fetch.
+* **`pc` (Program Counter):** 8-bit signed register holding the address of the next instruction to fetch.
 * **`acc` (Accumulator / Data Register):** 8-bit register storing sensor values and comparison operands.
 * **`zf` (Zero Flag):** 1-bit condition flag set to `1` when `acc == operand`, used by `JNE`.
-* **`device` (Actuator Register):** Stores the ID of the currently energized physical component.
+* **`halted` (Halt Flag):** 1-bit flag set to `1` by `HALT` to stop the processor clock.
+* **`device` (Actuator Register):** Stores the ID of the currently energized physical component (or `-1` when idle).
 
 ### 3. I/O Port Map
 * **Sensors (Inputs):**
   * Port `0` (`DOOR`): Safety switch (`1` = closed, `0` = open)
   * Port `1` (`LEVEL`): Tub water volume in Liters ($0$ to $50\text{ L}$)
-  * Port `2` (`TEMP`): Water temperature in Celsius ($20^\circ\text{C}$ to $55^\circ\text{C}$)
+  * Port `2` (`TEMP`): Water temperature in Celsius ($15^\circ\text{C}$ to $55^\circ\text{C}$, default start $20^\circ\text{C}$)
 * **Actuators (Outputs):**
   * Port `0` (`INLET`): Water inlet solenoid valve ($+10\text{ L/cycle}$)
   * Port `1` (`HEATER`): 1200W heating coil & spray wash circulation pump ($+5^\circ\text{C/cycle}$)
@@ -132,7 +133,7 @@ SUCCESS: dishwasher cycle complete in 45 clock cycles.
 ---
 
 ### 2. Safety Interlock Test (Door Open at Start)
-When the door is opened (`door = 0`), the CPU detects unsafe conditions at PC 0–2 and repeatedly traps execution at PC 0. No water valves, heaters, or pumps are allowed to activate:
+When the door is opened (`door = 0`), the CPU detects unsafe conditions at PC 0–2 and repeatedly loops across PC 0–2 (printing PC `1, 2, 0`). No water valves, heaters, or pumps are allowed to activate:
 
 ![Door Open Safety Interlock](screenshots/run_door_open.png)
 
@@ -196,7 +197,7 @@ Invalid input. Temp: 15-55 C in steps of 5. Level: 0-50 L in steps of 10. Door: 
 ## 👥 Authors & Academic Affiliation
 * **Institution:** East West University (EWU), Dhaka, Bangladesh
 * **Department:** Department of Computer Science & Engineering
-* **Course:** CSE360: Computer Architecture | Fall 2026
+* **Course:** CSE360: Computer Architecture | Section 01 | Group 12 | Fall 2026
 * **Supervisor:** Dr. Nawab Yousuf Ali
 * **Group Members:**
   * **Nusrat Rahman Aurna** (`2023-3-60-057`)
