@@ -202,3 +202,5 @@ Invalid input. Temp: 15-55 C in steps of 5. Level: 0-50 L in steps of 10. Door: 
 * **Group Members:**
   * **Nusrat Rahman Aurna** (`2023-3-60-057`)
   * **Pulok Akibuzzaman** (`2023-3-60-051`)
+* **Contributors:**
+  * **[Md Ashik Uz Zaman (@ashikonik)](https://github.com/ashikonik)**
