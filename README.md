@@ -15,7 +15,7 @@ The processor controls a complete wash cycle (door safety check, water fill, was
 
 ---
 
-## 💡 What Is Actually Happening Here? (Plain-English Guide)
+## 💡 What Is Actually Happening Here?
 
 If you are new to Computer Architecture or just browsing this repo, here is a simple explanation of what this project does and how it works:
 
