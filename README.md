@@ -6,6 +6,7 @@
 ## 📌 Project Overview
 **Course:** CSE360 – Computer Architecture  
 **Department:** Department of Computer Science & Engineering, East West University  
+**Repository:** [minimal-dishwasher-cpu-simulator](https://github.com/Pulok-Akibuzzaman/minimal-dishwasher-cpu-simulator)  
 **Topic:** *Suggest and design a minimal CPU architecture, including ISA, datapath, and control unit, for automating dishwasher control functions with sensor inputs, and verify it with a simulator.*
 
 This project implements a custom **minimal 8-bit Application-Specific Instruction-set Processor (ASIP)** designed specifically to automate a domestic dishwasher. Instead of deploying an oversized, general-purpose commercial microprocessor with hundreds of complex instructions, our CPU implements only **5 targeted instructions** operating on a lean datapath.
@@ -41,7 +42,7 @@ Each instruction is packed into a compact **9-bit word** (3-bit opcode + 6-bit o
   * Port `2` (`TEMP`): Water temperature in Celsius ($15^\circ\text{C}$ to $55^\circ\text{C}$, default start $20^\circ\text{C}$)
 * **Actuators (Outputs):**
   * Port `0` (`INLET`): Water inlet solenoid valve ($+10\text{ L/cycle}$)
-  * Port `1` (`HEATER`): 1200W heating coil & spray wash circulation pump ($+5^\circ\text{C/cycle}$)
+  * Port `1` (`HEATER`): Heating element & spray wash circulation pump ($+5^\circ\text{C/cycle}$)
   * Port `2` (`DRAIN`): Centrifugal water evacuation drain pump ($-10\text{ L/cycle}$)
   * Port `3` (`FAN`): Heated air convection drying blower fan ($-5^\circ\text{C/cycle}$)
   * Port `4` (`BUZZER`): Piezoelectric audio beeper signaling cycle complete
