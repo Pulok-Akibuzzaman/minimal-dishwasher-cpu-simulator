@@ -15,6 +15,33 @@ The processor controls a complete wash cycle (door safety check, water fill, was
 
 ---
 
+## 💡 What Is Actually Happening Here? (Plain-English Guide)
+
+If you are new to Computer Architecture or just browsing this repo, here is a simple explanation of what this project does and how it works:
+
+### 1. The Big Idea
+Every modern dishwasher has a tiny computer chip inside that decides when to fill water, heat up, wash, drain, and dry. Usually, engineers buy an existing chip (like an Arduino or PIC microcontroller). In this project, **we designed our own minimal custom CPU from scratch** specifically for a dishwasher, and wrote a C simulator (`dishwasher.c`) to prove it works.
+
+### 2. How the Simulator Works (Two Halves Talking in a Loop)
+Every tick of the simulated clock runs two steps back-to-back:
+1. **The CPU (`cpu_step()` — The Brain):** Fetches one instruction from its 21-instruction program stored in ROM (`rom[]`) and runs it. It can only do 5 basic things: read a sensor (`READ`), turn on a device (`SET`), compare a sensor against a target number (`CMP`), loop back if they don't match (`JNE`), or stop (`HALT`).
+2. **The Physical Dishwasher (`plant()` — The Machine):** Simulates what happens inside the tub in response to whichever device is currently turned on:
+   * **Water inlet ON:** Water level rises by `+10 L` each cycle (up to `50 L`).
+   * **Heater + pump ON:** Water temperature rises by `+5 °C` each cycle (up to `55 °C`).
+   * **Drain pump ON:** Water level drops by `-10 L` each cycle (down to `0 L`).
+   * **Drying fan ON:** Temperature cools down by `-5 °C` each cycle (down to `30 °C`).
+
+### 3. Step-by-Step Story of One Wash Cycle (45 Cycles Total)
+When you run `dishwasher.exe` with default settings (`20 °C`, `0 L`, door closed):
+1. **Safety Door Check (Cycles 1–3):** The CPU checks the door sensor. If the door is open (`0`), it loops forever in `Idle` mode and refuses to turn on water or heat (stopping at the 100-cycle timeout). Once closed (`1`), it moves on.
+2. **Fill Tub (Cycles 4–13):** Turns ON the water inlet valve and keeps checking the water level sensor in a loop until the tub reaches `50 L`.
+3. **Heat & Wash (Cycles 14–23):** Switches ON the heater and wash pump, looping until the water heats up from `20 °C` to `55 °C`.
+4. **Drain Water (Cycles 24–33):** Switches ON the drain pump and loops until the water level drops back to `0 L`.
+5. **Dry Dishes (Cycles 34–43):** Switches ON the drying fan and loops until the tub cools down to `30 °C`.
+6. **Finish & Stop (Cycles 44–45):** Turns ON the completion buzzer (`Buzzer (done)`) and runs `HALT`, ending the cycle cleanly in **45 clock cycles**.
+
+---
+
 ## ⚙️ Architecture Specification
 
 ### 1. Instruction Set Architecture (ISA)
