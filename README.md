@@ -183,7 +183,8 @@ Invalid input. Temp: 15-55 C in steps of 5. Level: 0-50 L in steps of 10. Door: 
 ```
 ├── dishwasher.c       # Complete C source code (ISA, Datapath, Control Unit, Plant simulator)
 ├── dishwasher.exe     # Pre-compiled executable binary (Windows x64)
-├── CSE360.docx        # Full official academic project report (Cover page, 9 sections, tables)
+├── Report-CSE360.docx # Official academic project report (Word format)
+├── Report-CSE360.pdf  # Official academic project report (PDF format)
 ├── README.md          # Project documentation, input/output specifications, screenshots
 └── screenshots/       # Terminal execution screenshots
     ├── run_standard.png
